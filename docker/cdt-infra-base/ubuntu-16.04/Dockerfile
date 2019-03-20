@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       zip \
       ##Xvnc
       libgtk-3-0 \
+      locales \
       #libgtk-3-0=3.22.30-1ubuntu1 \ Ubuntu 18.04
       #tigervnc-standalone-server \ Ubuntu 18.04
       #tigervnc-common \ Ubuntu 18.04
@@ -38,7 +39,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       fonts-dejavu \
       fonts-dejavu-core \
       fonts-dejavu-extra \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && locale-gen en_US.UTF-8
+# Need locale to be UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 RUN [ -f "/etc/ssl/certs/java/cacerts" ] || /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
