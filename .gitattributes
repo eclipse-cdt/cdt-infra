@@ -1,0 +1,9 @@
+* text=auto
+
+### Docker ###
+Dockerfile text
+# Must be linux line endings when building docker images
+*.sh text eol=lf
+
+### General ###
+*.md text
