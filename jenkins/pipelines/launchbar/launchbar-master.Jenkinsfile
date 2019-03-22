@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Run build') {
       steps {
-        container('launchbar') {
+        container('cdt') {
             git branch: 'master', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.launchbar.git'
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh """/usr/share/maven/bin/mvn clean verify -Pproduction \
