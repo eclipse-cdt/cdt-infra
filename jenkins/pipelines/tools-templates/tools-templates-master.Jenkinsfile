@@ -1,22 +1,21 @@
 pipeline {
   agent {
     kubernetes {
-      label 'launchbar-agent-pod'
+      label 'tools-templates-agent-pod'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
     }
   }
   stages {
     stage('Run build') {
       steps {
-        container('launchbar') {
-            git branch: 'master', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.launchbar.git'
+        container('cdt') {
+            git branch: 'master', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.tools.templates.git'
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh """/usr/share/maven/bin/mvn clean verify -Pproduction \
 -Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml"""
             }
 
-            junit '**/TEST-*.xml'
-            archiveArtifacts 'repo/target/repository/**,repo/target/*.zip'
+            archiveArtifacts 'repo/target/repository/**,repo/target/org.eclipse.tools.templates.repo.zip'
         }
       }
     }
