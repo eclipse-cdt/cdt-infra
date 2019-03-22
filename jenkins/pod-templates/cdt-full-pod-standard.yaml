@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: cdt
+    image: quay.io/kummallinen/cdt-infra-eclipse-full:ubuntu-16.04@sha256:3113d1f5a66a7cd9aaaff300dfb8b05ab1d386668716c53313f5f8d58437916c
+    tty: true
+    command: ["/bin/sh"]
+    args: ["-c", "/home/cdt/.vnc/xstartup.sh && cat"]
+    resources:
+      requests:
+        memory: "2.6Gi"
+        cpu: "1.3"
+      limits:
+        memory: "2.6Gi"
+        cpu: "1.3"
+    volumeMounts:
+    - name: settings-xml
+      mountPath: /home/jenkins/.m2/settings.xml
+      subPath: settings.xml
+      readOnly: true
+    - name: m2-repo
+      mountPath: /home/jenkins/.m2/repository
+  volumes:
+  - name: settings-xml
+    configMap: 
+      name: m2-dir
+      items:
+      - key: settings.xml
+        path: settings.xml
+  - name: m2-repo
+    emptyDir: {}
