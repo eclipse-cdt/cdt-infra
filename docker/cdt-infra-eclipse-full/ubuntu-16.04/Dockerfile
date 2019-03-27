@@ -33,4 +33,8 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
     && rm -rf /var/lib/apt/lists/*  \
     && npm install -g yarn
 
-USER 10001
+#Fix permissions for OpenShift & standard k8s
+RUN chown -R 1000:0 /home/cdt \
+  && chmod -R g+rwX /home/cdt
+
+USER 1000

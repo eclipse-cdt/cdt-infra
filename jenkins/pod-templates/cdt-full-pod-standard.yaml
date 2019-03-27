@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
   - name: cdt
-    image: quay.io/kummallinen/cdt-infra-eclipse-full:ubuntu-16.04@sha256:3113d1f5a66a7cd9aaaff300dfb8b05ab1d386668716c53313f5f8d58437916c
+    image: quay.io/kummallinen/cdt-infra-eclipse-full:v0.2-ubuntu-16.04@sha256:1803f980db3877de84fda6f9ef77019573862308f2c0ba470e02d3f492a22c18
     tty: true
     command: ["/bin/sh"]
     args: ["-c", "/home/cdt/.vnc/xstartup.sh && cat"]
