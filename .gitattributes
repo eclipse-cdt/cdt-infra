@@ -1,7 +1,8 @@
 * text=auto
 
 ### Docker ###
-Dockerfile text
+Dockerfile text eol=lf
+uid_entrypoint text eol=lf
 # Must be linux line endings when building docker images
 *.sh text eol=lf
 

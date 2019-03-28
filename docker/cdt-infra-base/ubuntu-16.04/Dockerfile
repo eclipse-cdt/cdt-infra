@@ -53,7 +53,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends x11-utils xauth
   && dpkg -i /tmp/tigervncserver_1.9.0-1ubuntu1_amd64.deb \
   && rm /tmp/tigervncserver_1.9.0-1ubuntu1_amd64.deb
 
-ENV HOME=/home/cdt
+ENV USER_NAME cdt
+ENV HOME /home/cdt
 
 # Setup VNC
 ENV DISPLAY :0
@@ -73,12 +74,9 @@ RUN curl -fsSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binar
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 ENV MAVEN_HOME /usr/share/maven
 
-#Fix permissions and create dir for Jenkins
-RUN chgrp -R 0 /home/cdt \
+#Fix permissions for OpenShift & standard k8s
+RUN chown -R 1000:0 /home/cdt \
   && chmod -R g+rwX /home/cdt
-#  && mkdir -p /home/jenkins \
-#  && chgrp -R 0 /home/jenkins \
-#  && chmod -R g+rwX /home/jenkins
 
-USER 10001
+USER 1000
 WORKDIR /home/cdt
