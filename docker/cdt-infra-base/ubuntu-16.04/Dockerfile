@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       git \
       gnupg \
       openjdk-8-jdk \
+      openssh-client \
       pkg-config \
       wget \
       zip \
