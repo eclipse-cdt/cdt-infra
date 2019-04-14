@@ -1,6 +1,6 @@
 pipeline {
   agent {
-  kubernetes {
+    kubernetes {
       label 'cdt-platform-sdk-pod'
       yamlFile 'jenkins/pod-templates/cdt-platform-sdk.yaml'
     }
