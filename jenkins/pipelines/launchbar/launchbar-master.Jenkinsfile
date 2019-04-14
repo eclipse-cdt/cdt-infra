@@ -5,6 +5,9 @@ pipeline {
       yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
     }
   }
+  options {
+    timestamps()
+  }
   stages {
     stage('Run build') {
       steps {
