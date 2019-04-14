@@ -5,6 +5,9 @@ pipeline {
       yamlFile 'jenkins/pod-templates/cdt-platform-sdk.yaml'
     }
   }
+  options {
+    timestamps()
+  }
   stages {
     stage('Code Formatting Checks') {
       steps {

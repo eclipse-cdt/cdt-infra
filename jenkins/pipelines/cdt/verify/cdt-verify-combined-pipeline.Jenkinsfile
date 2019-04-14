@@ -1,5 +1,8 @@
 pipeline {
   agent none
+  options {
+    timestamps()
+  }
   stages {
     stage('Verify Build') {
       failFast false
