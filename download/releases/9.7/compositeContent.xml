@@ -4,11 +4,12 @@
     type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='1'>
     <!-- timestamp made with date +%s%3N -->
-    <property name='p2.timestamp' value='1556304795553'/>
+    <property name='p2.timestamp' value='1556644849133'/>
   </properties>
   <children size='2'>
     <child location='../../launchbar/2.2/launchbar-2.2.2'/>
     <child location='cdt-9.7.0'/>
     <child location='cdt-9.7.1'/>
+    <child location='cdt-9.7.2'/>
   </children>
 </repository>
