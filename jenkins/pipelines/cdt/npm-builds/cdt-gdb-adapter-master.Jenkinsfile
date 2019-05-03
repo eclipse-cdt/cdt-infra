@@ -2,6 +2,7 @@ pipeline {
     agent {
         kubernetes {
             label 'cdt-agent-pod'
+<<<<<<< HEAD
             yaml """
 apiVersion: v1
 kind: Pod
@@ -27,6 +28,9 @@ spec:
     configMap:
       name: known-hosts
             """
+=======
+            yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
+>>>>>>> Add Jenkinsfiles for npm-build jobs
         }
     }
     options {
