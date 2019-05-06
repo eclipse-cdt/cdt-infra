@@ -2,35 +2,7 @@ pipeline {
     agent {
         kubernetes {
             label 'cdt-agent-pod'
-<<<<<<< HEAD
-            yaml """
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: cdt
-    image: quay.io/kummallinen/cdt-infra-eclipse-full:v0.3-ubuntu-16.04@sha256:e1670227a6a56c6be3c4062eb65983d567e435db61ed9e2ddcd599befb402bf9
-    tty: true
-    command: ["/bin/sh"]
-    args: ["-c", "/home/cdt/.vnc/xstartup.sh && cat"]
-    resources:
-      requests:
-        memory: "1Gi"
-        cpu: "1"
-      limits:
-        memory: "1Gi"
-        cpu: "1"
-    volumeMounts:
-    - name: volume-known-hosts
-      mountPath: /home/jenkins/.ssh
-  volumes:
-  - name: volume-known-hosts
-    configMap:
-      name: known-hosts
-            """
-=======
             yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
->>>>>>> Add Jenkinsfiles for npm-build jobs
         }
     }
     options {
