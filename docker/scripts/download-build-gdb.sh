@@ -135,8 +135,6 @@ function extract_gdb() {
 
   echo_header "Extracting ${archive} to ${build_dir}"
 
-  ${dryrun} rm -r ${build_dir} || true
-
   ${dryrun} mkdir -p "${build_dir}"
 
   ${dryrun} tar -xf "${archive}" -C "${build_dir}"
@@ -170,8 +168,8 @@ function configure_gdb() {
   local version="$1"
 
   local build="${build_dir}/gdb-${version}"
-  local cflags="-Wno-error -O0"
-  local cxxflags="-Wno-error -O0"
+  local cflags="-Wno-error -g3 -O0"
+  local cxxflags="-Wno-error -g3 -O0"
 
   echo_header "Configuring in ${build}"
 
@@ -340,4 +338,3 @@ echo "  ${symlinks_dir}"
 echo ""
 echo "You can add this path to your \$PATH to access them easily."
 echo ""
-

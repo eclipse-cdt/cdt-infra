@@ -21,6 +21,9 @@ COPY scripts/download-build-gdb.sh /opt/scripts/download-build-gdb.sh
 #GDB
 ENV GDB_BASE /shared/common/gdb/gdb-all
 ENV GDB_VERSIONS 8.3 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1
+# build without debug info to reduce size
+ENV CFLAGS -g0
+ENV CXXFLAGS -g0
 RUN chmod u+x /opt/scripts/download-build-gdb.sh && mkdir -p /shared/common/gdb/gdb-all  && /opt/scripts/download-build-gdb.sh -b $GDB_BASE $GDB_VERSIONS \
     && rm -rf $GDB_BASE/download && rm -rf $GDB_BASE/build
 
