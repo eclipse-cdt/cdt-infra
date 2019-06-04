@@ -17,7 +17,7 @@ pipeline {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/usr/share/maven/bin/mvn clean verify \
 -Pskip-tests-except-dsf-gdb \
--Dcdt.tests.dsf.gdb.versions=gdbserver.8.2 \
+-Dcdt.tests.dsf.gdb.versions=gdbserver.8.3 \
 -DskipDoc=true \
 -Ddsf.gdb.tests.timeout.multiplier=50 \
 -Dindexer.timeout=300 \
