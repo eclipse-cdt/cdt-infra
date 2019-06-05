@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
   - name: platform-sdk
-    image: quay.io/kummallinen/cdt-infra-platform-sdk:v0.2-sdk4.9-ubuntu-16.04@sha256:65b143ffb8f5dca8998469a1acd297740fdb9bd88d29c9b90de9635a42362078
+    image: quay.io/eclipse-cdt/cdt-infra-platform-sdk:ubuntu-16.04@sha256:9049ac0439646630062c240c640f6d46ed132fc67dd25389ab06935729039e02
     tty: true
     args: ["cat"]
     resources:

@@ -32,7 +32,7 @@ default_jlevel="4"
 jlevel="${default_jlevel}"
 
 # Supported versions
-default_versions="8.2 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1 7.4.1 7.3.1 7.2 7.1 7.0.1 6.8 6.7.1 6.6"
+default_versions="8.3 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1 7.4.1 7.3.1 7.2 7.1 7.0.1 6.8 6.7.1 6.6"
 
 # Is set to "echo" if we are doing a dry-run.
 dryrun=""
@@ -135,8 +135,6 @@ function extract_gdb() {
 
   echo_header "Extracting ${archive} to ${build_dir}"
 
-  ${dryrun} rm -r ${build_dir} || true
-
   ${dryrun} mkdir -p "${build_dir}"
 
   ${dryrun} tar -xf "${archive}" -C "${build_dir}"
@@ -170,8 +168,8 @@ function configure_gdb() {
   local version="$1"
 
   local build="${build_dir}/gdb-${version}"
-  local cflags="-Wno-error -O0"
-  local cxxflags="-Wno-error -O0"
+  local cflags="-Wno-error -g3 -O0"
+  local cxxflags="-Wno-error -g3 -O0"
 
   echo_header "Configuring in ${build}"
 
@@ -340,4 +338,3 @@ echo "  ${symlinks_dir}"
 echo ""
 echo "You can add this path to your \$PATH to access them easily."
 echo ""
-
