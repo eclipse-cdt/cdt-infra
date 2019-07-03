@@ -22,6 +22,7 @@ pipeline {
 -f pom.xml \
 -P skip-tests-except-cdt-other \
 -P build-standalone-debugger-rcp \
+-P baseline-compare-and-replace \
 -Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml'''
             }
 

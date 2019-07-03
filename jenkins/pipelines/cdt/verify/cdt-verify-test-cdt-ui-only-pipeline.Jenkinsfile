@@ -21,6 +21,7 @@ pipeline {
 -Dorg.eclipse.cdt.ui.testplugin.DisplayHelper.TIMEOUT_MULTIPLIER=5 \
 -f pom.xml \
 -P skip-tests-except-cdt-ui \
+-P baseline-compare-and-replace \
 -Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml'''
             }
 
