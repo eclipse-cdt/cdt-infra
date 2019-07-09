@@ -21,7 +21,7 @@ clean verify --batch-mode \
             }
 
             junit allowEmptyResults: true,  testResults: '**/TEST-*.xml'
-            archiveArtifacts '**/screenshots/*.jpeg,**/target/**/*.log'
+            archiveArtifacts allowEmptyArchive: true, artifacts: '**/screenshots/*.jpeg,**/target/**/*.log'
           }
         }
       }
