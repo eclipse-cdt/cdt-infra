@@ -16,7 +16,7 @@ pipeline {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/usr/share/maven/bin/mvn \
-clean verify \
+clean verify -B -V \
 -P production \
 -P build-standalone-debugger-rcp \
 -P baseline-compare-and-replace \

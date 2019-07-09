@@ -15,7 +15,7 @@ pipeline {
           git branch: 'master', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git'
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh "/usr/share/maven/bin/mvn clean verify \
+                sh "/usr/share/maven/bin/mvn clean verify -B -V \
 -Pskip-tests-except-dsf-gdb \
 -Dcdt.tests.dsf.gdb.versions=gdbserver.8.3 \
 -DskipDoc=true \

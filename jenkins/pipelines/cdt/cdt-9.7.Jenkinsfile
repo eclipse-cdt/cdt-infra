@@ -15,7 +15,7 @@ pipeline {
           git branch: 'cdt_9_7', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git'
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh "/usr/share/maven/bin/mvn clean verify -Pproduction -Pbuild-standalone-debugger-rcp \
+                sh "/usr/share/maven/bin/mvn clean verify -B -V -Pproduction -Pbuild-standalone-debugger-rcp \
 -Ddsf.gdb.tests.timeout.multiplier=50 -Dindexer.timeout=300 \
 -Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml"
             }

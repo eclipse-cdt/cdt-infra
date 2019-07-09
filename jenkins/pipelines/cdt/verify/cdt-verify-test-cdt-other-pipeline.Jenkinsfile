@@ -15,7 +15,7 @@ pipeline {
           timeout(120) {
             checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh '''/usr/share/maven/bin/mvn clean verify -V -B -DskipDoc=true \
+                sh '''/usr/share/maven/bin/mvn clean verify -B -V -DskipDoc=true \
 -Ddsf.gdb.tests.timeout.multiplier=50 \
 -Dindexer.timeout=500 \
 -Dorg.eclipse.cdt.ui.testplugin.DisplayHelper.TIMEOUT_MULTIPLIER=5 \

@@ -16,7 +16,7 @@ pipeline {
             checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.launchbar.git']]])
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh """/usr/share/maven/bin/mvn \
-clean verify \
+clean verify -B -V \
 -Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml"""
             }
 
