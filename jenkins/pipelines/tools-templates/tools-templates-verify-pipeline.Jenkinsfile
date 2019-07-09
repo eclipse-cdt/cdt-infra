@@ -20,7 +20,7 @@ clean verify --batch-mode \
 -Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml"""
             }
 
-            junit allowEmptyResults: true, '**/TEST-*.xml'
+            junit allowEmptyResults: true,  testResults: '**/TEST-*.xml'
             archiveArtifacts '**/screenshots/*.jpeg,**/target/**/*.log'
           }
         }
