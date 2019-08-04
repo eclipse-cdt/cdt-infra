@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       pkg-config \
       python3-all-dev python3-pip python3-setuptools \
       zlib1g-dev \
+      gdbserver \
     && rm -rf /var/lib/apt/lists/* \
     && pip3 install --upgrade pip
 

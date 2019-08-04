@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eux
 
 if ! git diff-index HEAD --quiet; then
     echo "git tree is dirty, please commit changes before deploying images"
@@ -24,8 +24,9 @@ echo "The following images have been pushed."
 for image in $images; do
     hashname=$(docker inspect --format='{{index .RepoDigests 0}}' $image)
     echo $image "-->" $hashname
+    nameonly=$(echo $image | sed -es,:.*,,)
     find $toplevel -name \*\.Jenkinsfile -or -name \*\.yaml | while read file; do
-        sed -i "s#image: $namespace/$image[:@].*#image: $hashname#" $file
+        sed -i "s#image: $namespace/$nameonly[:@].*#image: $hashname#" $file
         git add $file
     done
 done
