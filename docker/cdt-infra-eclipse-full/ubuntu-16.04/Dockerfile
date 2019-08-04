@@ -30,6 +30,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 
 # GDB pre-built in a different image
 COPY --from=cdt-infra-all-gdbs:ubuntu-16.04 /shared/common/gdb/gdb-all /shared/common/gdb/gdb-all
+ENV PATH="/shared/common/gdb/gdb-all/bin:${PATH}"
 
 #Fix permissions for OpenShift & standard k8s
 RUN chown -R 1000:0 /home/cdt \
