@@ -25,10 +25,6 @@ pipeline {
                         sh '''
 yarn
 yarn build
-
-export JUNIT_REPORT_PATH=test-reports/integration.xml
-export JUNIT_REPORT_PACKAGES=1
-export JUNIT_REPORT_STACK=1
 yarn test
                         '''
                         junit 'test-reports/*.xml'
