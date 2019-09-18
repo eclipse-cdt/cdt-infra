@@ -49,7 +49,7 @@ $ECHO $SSH "cd $DOWNLOAD && \
     mv org.eclipse.$PROJECT.repo.zip $MILESTONE.zip"
 
 # promote standalone debugger
-if [ "$PROJECT" == "cdt" ]; then
+if [ "$PROJECT" == "cdt" ] && [ "$STANDALONE" == "true" ]; then
     $ECHO $SSH "mkdir -p $DOWNLOAD/rcp"
 
     $ECHO $SSH "cd $DOWNLOAD/rcp && \

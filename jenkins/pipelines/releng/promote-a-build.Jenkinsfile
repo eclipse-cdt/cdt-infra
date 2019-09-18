@@ -45,6 +45,7 @@ spec:
   parameters {
     booleanParam(defaultValue: true, description: 'Do a dry run of the build. All commands will be echoed.First run with this on, then when you are sure it is right, choose rebuild in the passing job and uncheck this box', name: 'DRY_RUN')
     choice(choices: ['cdt', 'tools.templates', 'launchbar'], description: 'Project to promote. Promoting cdt will include the cdt standalone debugger.', name: 'PROJECT')
+    booleanParam(defaultValue: true, description: 'Include CDT standalone debugger when publishing (if applicable)', name: 'STANDALONE')
     string(defaultValue: '9.8', description: 'The major and minor version of CDT being released (e.g. 9.7, 9.8, 10.0).', name: 'MINOR_VERSION')
     string(defaultValue: 'cdt-9.8.0', description: 'The full name of this release (e.g. cdt-9.4.2, cdt-9.5.0-rc1, cdt-9.5.0-photon-m7, cdt-9.5.0-photon-rc1)', name: 'MILESTONE')
     string(defaultValue: 'cdt-master', description: 'The CI job name being promoted from', name: 'CDT_JOB_NAME')
