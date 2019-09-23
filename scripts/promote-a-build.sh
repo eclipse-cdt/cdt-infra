@@ -23,30 +23,37 @@ fi
 echo Using download location root of $DOWNLOAD
 echo Using artifacts location root of $ARTIFACTS
 
-echo Testing to make sure we are publishing to a new directory
-$SSH "test ! -e $DOWNLOAD"
+
 
 echo Testing to make sure artifacts location is sane
 wget -q --output-document=/dev/null  $ARTIFACTS
 
 ECHO=echo
 if [ "$DRY_RUN" == "false" ]; then
-   ECHO=""
+    ECHO=""
 else
     echo Dry run of build:
 fi
 
-$ECHO $SSH "mkdir -p $DOWNLOAD"
 
-$ECHO $SSH "cd $DOWNLOAD && \
-    wget -q $ARTIFACTS_REPO_TARGET/repository/*zip*/repository.zip && \
-    unzip -q repository.zip && \
-    mv repository/* . && \
-    rm -r repository repository.zip"
+# The STANDALONE_ONLY flag is used to publish the standalone debugger from a 
+# different job (e.g. cdt-9.9-standalone-debugger job) after the main
+# build has been published
+if [ "$STANDALONE_ONLY" == "false" ]; then
+    echo Testing to make sure we are publishing to a new directory
+    $SSH "test ! -e $DOWNLOAD"
+    $ECHO $SSH "mkdir -p $DOWNLOAD"
 
-$ECHO $SSH "cd $DOWNLOAD && \
-    wget -q $ARTIFACTS_REPO_TARGET/org.eclipse.$PROJECT.repo.zip && \
-    mv org.eclipse.$PROJECT.repo.zip $MILESTONE.zip"
+    $ECHO $SSH "cd $DOWNLOAD && \
+        wget -q $ARTIFACTS_REPO_TARGET/repository/*zip*/repository.zip && \
+        unzip -q repository.zip && \
+        mv repository/* . && \
+        rm -r repository repository.zip"
+
+    $ECHO $SSH "cd $DOWNLOAD && \
+        wget -q $ARTIFACTS_REPO_TARGET/org.eclipse.$PROJECT.repo.zip && \
+        mv org.eclipse.$PROJECT.repo.zip $MILESTONE.zip"
+fi
 
 # promote standalone debugger
 if [ "$PROJECT" == "cdt" ] && [ "$STANDALONE" == "true" ]; then
