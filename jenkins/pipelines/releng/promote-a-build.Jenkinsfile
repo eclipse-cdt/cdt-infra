@@ -53,6 +53,9 @@ spec:
     string(defaultValue: '12345', description: 'The CI build number being promoted from', name: 'CDT_BUILD_NUMBER')
     choice(choices: ['releases', 'builds', 'tools.templates', 'launchbar'], description: 'Publish location (releases or builds for CDT main project, or specific sub-project location for others)', name: 'RELEASE_OR_BUILD')
   }
+  options {
+    timestamps()
+  }
   stages {
     stage('Upload') {
       steps {
