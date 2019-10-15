@@ -55,6 +55,7 @@ spec:
   }
   options {
     timestamps()
+    disableConcurrentBuilds()
   }
   stages {
     stage('Upload') {

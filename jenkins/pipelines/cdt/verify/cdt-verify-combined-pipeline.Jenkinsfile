@@ -2,6 +2,7 @@ pipeline {
   agent none
   options {
     timestamps()
+    disableConcurrentBuilds()
   }
   stages {
     stage('Verify Build') {
