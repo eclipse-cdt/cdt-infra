@@ -7,6 +7,7 @@ pipeline {
     }
     options {
         timestamps()
+        disableConcurrentBuilds()
     }
     stages {
         stage('Run build') {
