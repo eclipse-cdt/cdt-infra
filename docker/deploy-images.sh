@@ -11,13 +11,16 @@ namespace=${1:-quay.io/eclipse-cdt}
 shorthash=$(git rev-parse --short HEAD)
 toplevel=$(git rev-parse --show-toplevel)
 
-images="cdt-infra-eclipse-full:ubuntu-16.04 cdt-infra-platform-sdk:sdk4.9-ubuntu-16.04"
+images="cdt-infra-eclipse-full:ubuntu-18.04 cdt-infra-platform-sdk:sdk4.9-ubuntu-18.04"
 
 $toplevel/docker/build-images.sh
 
 for image in $images; do
     docker tag $image ${namespace}/${image}-${shorthash}
     docker push ${namespace}/${image}-${shorthash}
+    nameonly=$(echo $image | sed -es,:.*,,)
+    docker tag $image ${namespace}/${nameonly}:latest
+    docker push ${namespace}/${nameonly}:latest
 done
 
 echo "The following images have been pushed."

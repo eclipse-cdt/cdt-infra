@@ -5,7 +5,8 @@ spec:
   - name: platform-sdk
     image: quay.io/eclipse-cdt/cdt-infra-platform-sdk@sha256:133b4658a0605d51cf01884a78f2cfd6caf7cacc1357545995f6989efde261e4
     tty: true
-    args: ["cat"]
+    command: ["/bin/sh"]
+    args: ["-c", "cat"]
     resources:
       requests:
         memory: "1Gi"

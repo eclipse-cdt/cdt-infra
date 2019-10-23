@@ -1,4 +1,4 @@
-FROM cdt-infra-base:ubuntu-16.04
+FROM cdt-infra-base:ubuntu-18.04
 
 USER root
 #Eclipse SDK
@@ -8,7 +8,9 @@ RUN mkdir -p ${HOME}/buildtools && cd ${HOME}/buildtools \
   && mv eclipse eclipse-SDK-${ECLIPSE_VERSION}
 
 #Fix permissions for OpenShift & standard k8s
-RUN chown -R 1000:0 /home/cdt \
-  && chmod -R g+rwX /home/cdt
+RUN chown -R 1000:0 ${HOME} \
+  && chmod -R g+rwX ${HOME}
 
 USER 1000
+
+CMD ["/home/vnc/.vnc/xstartup.sh"]
