@@ -32,10 +32,13 @@ default_jlevel="4"
 jlevel="${default_jlevel}"
 
 # Supported versions
-default_versions="8.3 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1 7.4.1 7.3.1 7.2 7.1 7.0.1 6.8 6.7.1 6.6"
+default_versions="8.3.1 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1 7.4.1 7.3.1 7.2 7.1 7.0.1 6.8 6.7.1 6.6"
 
 # Is set to "echo" if we are doing a dry-run.
 dryrun=""
+
+# Is set to "yes" to download only
+download_only="no"
 
 # Print help and exit with the specified exit code.
 #
@@ -54,6 +57,7 @@ function help_and_exit() {
   echo "                       installing the gdbs (default: ${default_base_dir})."
   echo "  -d, --dry-run        Make a dry-run: print the commands instead of executing"
   echo "                       them."
+  echo "      --download       Download, but do not build."
   echo "  -h, --help           Print this help message and exit."
   echo "  -j, --jobs N         Number of parallel jobs while making. N is passed"
   echo "                       directly to make's -j (default: ${default_jlevel})."
@@ -149,16 +153,25 @@ function fixup_gdb() {
 
   echo_header "Fixing up gdb ${version}"
 
-  # glibc or the kernel changed the signal API at some point
   case "$version" in
+    # glibc or the kernel changed the signal API at some point
     "6.6"|"6.7.1"|"6.8"|"7.0.1"|"7.1"|"7.2"|"7.3.1"|"7.4.1")
       ${dryrun} find "${build}/gdb" -type f -exec sed -i -e 's/struct siginfo;/#include <signal.h>/g' {} \;
       ${dryrun} find "${build}/gdb" -type f -exec sed -i -e 's/struct siginfo/siginfo_t/g' {} \;
+      ;;
+
+    # glibc or the kernel changed the proc-service API at some point (original GDB fix: https://sourceware.org/ml/gdb-patches/2015-02/msg00210.html)
+    "7.9.1"|"7.8.2"|"7.7.1"|"7.6.2"|"7.5.1"|"7.4.1"|"7.3.1"|"7.2"|"7.1"|"7.0.1"|"6.8"|"6.7.1"|"6.6")
+      ${dryrun} sed -i -e 's/ps_lgetfpregs (gdb_ps_prochandle_t ph, lwpid_t lwpid, void \*fpregset)/ps_lgetfpregs (gdb_ps_prochandle_t ph, lwpid_t lwpid, prfpregset_t *fpregset)/g' "${build}/gdb/gdbserver/proc-service.c"
+      ${dryrun} sed -i -e 's/ps_lsetfpregs (gdb_ps_prochandle_t ph, lwpid_t lwpid, void \*fpregset)/ps_lsetfpregs (gdb_ps_prochandle_t ph, lwpid_t lwpid, const prfpregset_t *fpregset)/g' "${build}/gdb/gdbserver/proc-service.c"
       ;;
   esac
 
   # Fix wrong include on Mac
   ${dryrun} find "${build}" -name "darwin-nat.c" -type f -exec sed -i -e "s/machine\/setjmp.h/setjmp.h/g" {} \;
+
+  # Fix change in const: https://sourceware.org/bugzilla/show_bug.cgi?id=20491
+  ${dryrun} find "${build}/gdb" -type f '(' -name '*.c' -or -name '*.h' ')' -exec sed -i -e 's/ps_get_thread_area (const struct ps_prochandle/ps_get_thread_area (struct ps_prochandle/g' {} \;
 }
 
 # Run ./configure.
@@ -186,7 +199,7 @@ function configure_gdb() {
   cxxflags="${cxxflags} ${CXXFLAGS:-}"
 
   # Need to use eval to allow the ${dryrun} trick to work with the env var command at the start.
-  eval ${dryrun} 'CFLAGS="${cflags}" CXXFLAGS="${cxxflags}" ./configure --prefix="${install_dir}/gdb-${version}"'
+  eval ${dryrun} 'CFLAGS="${cflags}" CXXFLAGS="${cxxflags}" ./configure --prefix="${install_dir}/gdb-${version}" --enable-werror=no'
 
   ${dryrun} popd
 }
@@ -268,6 +281,10 @@ while true; do
     dryrun="echo"
     shift
     ;;
+  --download)
+    download_only="yes"
+    shift
+    ;;
   -h|--help)
     help_and_exit 0
     break
@@ -320,21 +337,25 @@ done
 
 for version in $versions; do
   download_gdb "$version"
-  extract_gdb "$version"
-  fixup_gdb "$version"
-  configure_gdb "$version"
-  make_gdb "$version"
-  make_install_gdb "$version"
-  symlink_gdb "$version"
+  if [ "$download_only" = "no" ]; then
+    extract_gdb "$version"
+    fixup_gdb "$version"
+    configure_gdb "$version"
+    make_gdb "$version"
+    make_install_gdb "$version"
+    symlink_gdb "$version"
+  fi
 done
 
 echo_header "Done!"
 echo ""
-echo "gdb versions built:"
-echo "  ${versions}"
-echo ""
-echo "Symbolic links to binaries have been created in:"
-echo "  ${symlinks_dir}"
-echo ""
-echo "You can add this path to your \$PATH to access them easily."
-echo ""
+if [ "$download_only" = "no" ]; then
+  echo "gdb versions built:"
+  echo "  ${versions}"
+  echo ""
+  echo "Symbolic links to binaries have been created in:"
+  echo "  ${symlinks_dir}"
+  echo ""
+  echo "You can add this path to your \$PATH to access them easily."
+  echo ""
+fi
