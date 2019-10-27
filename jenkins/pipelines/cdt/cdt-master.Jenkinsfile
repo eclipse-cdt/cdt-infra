@@ -10,10 +10,16 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
-    stage('Run build') {
+    stage('Git Clone') {
       steps {
         container('cdt') {
           git branch: 'master', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git'
+        }
+      }
+    }
+    stage('Run build') {
+      steps {
+        container('cdt') {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/usr/share/maven/bin/mvn \
