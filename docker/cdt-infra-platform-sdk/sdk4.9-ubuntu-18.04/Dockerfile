@@ -14,6 +14,15 @@ RUN mkdir -p ${HOME}/buildtools && cd ${HOME}/buildtools \
 RUN chown -R 1000:0 ${HOME} \
   && chmod -R g+rwX ${HOME}
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      locales \
+    && rm -rf /var/lib/apt/lists/*
+RUN locale-gen en_US.UTF-8
+# Need locale to be UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
 USER 1000
 
 CMD ["/home/vnc/.vnc/xstartup.sh"]
