@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       gdbserver \
       gcc-mingw-w64-x86-64 \
       clang \
+    && apt-get install -y llvm \
     && rm -rf /var/lib/apt/lists/* \
     && pip3 install --upgrade pip
 

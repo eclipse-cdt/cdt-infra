@@ -22,4 +22,4 @@ COPY --from=0 /opt/osxcross/target /opt/osxcross/target
 ENV PATH="/opt/osxcross/target/bin:${PATH}"
 # At this point the osxcross toolchain is not usable,
 # it needs to be copied into another container and that
-# container needs clang installed too.
+# container needs clang & llvm installed too.
