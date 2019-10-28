@@ -25,11 +25,16 @@ pipeline {
 -P baseline-compare-and-replace \
 -Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml'''
             }
-
-            junit '*/*/target/surefire-reports/*.xml'
-            archiveArtifacts '**/screenshots/*.jpeg,**/target/**/*.log'
           }
         }
+      }
+    }
+  }
+  post {
+    always {
+      container('cdt') {
+        junit '*/*/target/surefire-reports/*.xml'
+        archiveArtifacts '**/screenshots/*.jpeg,**/target/**/*.log'
       }
     }
   }
