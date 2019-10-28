@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
   - name: platform-sdk
-    image: quay.io/eclipse-cdt/cdt-infra-platform-sdk@sha256:0695a736d5cad0b1ae55263ab79ce27d40ed519800f1ab9c77bdc40040ab8494
+    image: quay.io/eclipse-cdt/cdt-infra-platform-sdk@sha256:664154af0b9b972c91009f1aa5597f2c7d4ea6589a93ef38a6bb2d6c21df73b0
     tty: true
     command: ["/bin/sh"]
     args: ["-c", "cat"]
