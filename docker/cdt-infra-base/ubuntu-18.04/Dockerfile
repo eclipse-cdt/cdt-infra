@@ -51,7 +51,8 @@ RUN chmod 755 ${HOME}/.vnc/xstartup*.sh
 ####
 # From this point forward is the extra standard tools for CDT
 
-# Java and other tools
+# Java, git and other tools
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
       openjdk-8-jdk \
@@ -59,9 +60,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       wget \
       zip \
       unzip \
-      git \
+      gnupg \
     && rm -rf /var/lib/apt/lists/*
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+
+# The version of git in Ubuntu 18.04 causes problems, so use newer git. See Bug 548519
+RUN echo "deb http://ppa.launchpad.net/git-core/ppa/ubuntu bionic main" > /etc/apt/sources.list.d/git-core-ubuntu-ppa-bionic.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E1DD270288B4E6030699E45FA1715D88E1DF1F24 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Maven
 ENV MAVEN_VERSION 3.6.0
