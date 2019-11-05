@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'launchbar-agent-pod'
+      label 'launchbar-verify-pipeline-df43bbc'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
     }
   }

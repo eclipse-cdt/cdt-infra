@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'cdt-upload-agent-pod'
+      label 'promote-files-to-download-df43bbc'
       yaml """
 apiVersion: v1
 kind: Pod
