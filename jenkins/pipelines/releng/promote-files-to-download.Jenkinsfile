@@ -46,7 +46,7 @@ spec:
     booleanParam(defaultValue: true, description: 'Do a dry run of the build. All commands will be echoed.First run with this on, then when you are sure it is right, choose rebuild in the passing job and uncheck this box', name: 'DRY_RUN')
   }
   options {
-    timestamps()
+    timestamps
   }
  stages {
     stage('Upload') {
