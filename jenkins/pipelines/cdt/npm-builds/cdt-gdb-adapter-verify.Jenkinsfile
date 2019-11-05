@@ -34,4 +34,11 @@ yarn test
             }
         }
     }
+    post {
+        always {
+            container('cdt') {
+                archiveArtifacts '**'
+            }
+        }
+    }
 }
