@@ -54,7 +54,7 @@ spec:
     choice(choices: ['releases', 'builds', 'tools.templates', 'launchbar'], description: 'Publish location (releases or builds for CDT main project, or specific sub-project location for others)', name: 'RELEASE_OR_BUILD')
   }
   options {
-    timestamps
+    timestamps()
     disableConcurrentBuilds()
   }
   stages {

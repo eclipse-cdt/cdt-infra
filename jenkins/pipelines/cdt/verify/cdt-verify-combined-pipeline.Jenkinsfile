@@ -1,7 +1,7 @@
 pipeline {
   agent none
   options {
-    timestamps
+    timestamps()
     disableConcurrentBuilds()
   }
   stages {

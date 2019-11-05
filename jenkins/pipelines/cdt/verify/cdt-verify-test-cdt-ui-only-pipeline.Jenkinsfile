@@ -6,7 +6,7 @@ pipeline {
     }
   }
   options {
-    timestamps
+    timestamps()
     disableConcurrentBuilds()
   }
   stages {
