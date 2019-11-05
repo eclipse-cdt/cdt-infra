@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'launchbar-master-df43bbc'
+      label 'launchbar-master-040826d'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
     }
   }
