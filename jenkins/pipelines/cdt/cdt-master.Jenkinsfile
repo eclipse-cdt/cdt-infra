@@ -7,7 +7,6 @@ pipeline {
   }
   options {
     timestamps()
-    disableConcurrentBuilds()
   }
   stages {
     stage('Git Clone') {
