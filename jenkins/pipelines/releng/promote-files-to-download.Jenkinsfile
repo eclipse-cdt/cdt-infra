@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'promote-files-to-download-35cfe16'
+      label 'promote-files-to-download-149df18'
       yaml """
 apiVersion: v1
 kind: Pod
