@@ -59,6 +59,12 @@ RUN chown -R 1000:0 ${HOME} \
 RUN apt-get update
 RUN apt-get install -y at-spi2-core
 RUN apt-get install -y xserver-xephyr
+
+RUN mkdir -p /var/run/dbus
+
+RUN apt-get install -y sudo
+RUN echo "vnc ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 ENV USER_NAME vnc
 USER 1000
 WORKDIR ${HOME}

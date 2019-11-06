@@ -22,11 +22,16 @@ pipeline {
         container('cdt') {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh "/home/vnc/.vnc/xstartup_metacity.sh ; \
-                sleep 10s; \
+                sh "sudo dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address ; \
+                sleep 1s; \
+                /home/vnc/.vnc/xstartup_metacity.sh ; \
+                sleep 1s; \
                 (Xephyr -screen 1024x768 :51 &) ; \
+                sleep 1s; \
                 export DISPLAY=:51 ; \
+                sleep 1s; \
                 (metacity --sm-disable --replace &) ; \
+                sleep 1s; \
                 /usr/share/maven/bin/mvn \
 clean verify -B -V \
   -DskipDocs \
