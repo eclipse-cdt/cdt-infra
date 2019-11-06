@@ -58,6 +58,7 @@ RUN chown -R 1000:0 ${HOME} \
   && chmod -R g+rwX ${HOME}
 RUN apt-get update
 RUN apt-get install -y at-spi2-core
+RUN apt-get install -y xserver-xephyr
 ENV USER_NAME vnc
 USER 1000
 WORKDIR ${HOME}
