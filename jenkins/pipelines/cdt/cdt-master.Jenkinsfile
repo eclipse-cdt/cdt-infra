@@ -22,7 +22,7 @@ pipeline {
         container('cdt') {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh "/usr/share/maven/bin/mvn \
+                sh "/home/vnc/.vnc/xstartup_metacity.sh ; sleep 10s; /usr/share/maven/bin/mvn \
 clean verify -B -V \
   -DskipDocs \
   -Pskip-tests-except-cdt-other \
