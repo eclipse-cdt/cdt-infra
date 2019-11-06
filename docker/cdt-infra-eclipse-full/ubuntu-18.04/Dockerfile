@@ -56,7 +56,8 @@ ENV PATH="/opt/osxcross/target/bin:${PATH}"
 #Fix permissions for OpenShift & standard k8s
 RUN chown -R 1000:0 ${HOME} \
   && chmod -R g+rwX ${HOME}
-
+RUN apt-get update
+RUN apt-get install -y at-spi2-core
 ENV USER_NAME vnc
 USER 1000
 WORKDIR ${HOME}
