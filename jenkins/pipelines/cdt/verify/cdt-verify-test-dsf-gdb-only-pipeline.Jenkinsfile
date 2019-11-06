@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'cdt-verify-test-dsf-gdb-only-pipeline-44637c5'
+      label 'cdt-verify-test-dsf-gdb-only-pipeline-aadcc84'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
     }
   }

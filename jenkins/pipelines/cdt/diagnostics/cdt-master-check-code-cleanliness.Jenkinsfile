@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'cdt-master-check-code-cleanliness-44637c5'
+      label 'cdt-master-check-code-cleanliness-aadcc84'
       yamlFile 'jenkins/pod-templates/cdt-platform-sdk.yaml'
     }
   }
