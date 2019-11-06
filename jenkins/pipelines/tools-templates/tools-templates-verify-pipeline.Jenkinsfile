@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'tools-templates-verify-pipeline-aadcc84'
+      label 'tools-templates-verify-pipeline-27a211f'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
     }
   }

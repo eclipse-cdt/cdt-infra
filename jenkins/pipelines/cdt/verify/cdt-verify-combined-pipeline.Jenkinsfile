@@ -11,7 +11,7 @@ pipeline {
         stage('Code Formatting Checks') {
           agent {
           kubernetes {
-              label 'cdt-verify-combined-pipeline-aadcc84'
+              label 'cdt-verify-combined-pipeline-27a211f'
               yamlFile 'jenkins/pod-templates/cdt-platform-sdk.yaml'
             }
           }
@@ -27,7 +27,7 @@ pipeline {
         stage('CDT UI') {
           agent {
           kubernetes {
-              label 'cdt-verify-combined-pipeline-aadcc84'
+              label 'cdt-verify-combined-pipeline-27a211f'
               yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
             }
           }
@@ -54,7 +54,7 @@ pipeline {
         stage('CDT Other') {
           agent {
           kubernetes {
-              label 'cdt-verify-combined-pipeline-aadcc84'
+              label 'cdt-verify-combined-pipeline-27a211f'
               yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
             }
           }
@@ -88,7 +88,7 @@ pipeline {
           }
           agent {
           kubernetes {
-              label 'cdt-verify-combined-pipeline-aadcc84'
+              label 'cdt-verify-combined-pipeline-27a211f'
               yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
             }
           }
