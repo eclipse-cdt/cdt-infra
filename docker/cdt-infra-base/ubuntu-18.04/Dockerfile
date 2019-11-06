@@ -28,10 +28,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       fonts-dejavu \
       fonts-dejavu-core \
       fonts-dejavu-extra \
-      # In addition to metacity in upstream version, provide icewm and mutter managers
-      dbus-x11 \
-      mutter \
-      icewm \
     && rm -rf /var/lib/apt/lists/*
 
 ENV HOME=/home/vnc
@@ -45,7 +41,7 @@ RUN mkdir -p ${HOME}/.vnc && chmod -R 775 ${HOME} \
 # and use icewm as default (experiments showed that on 16.04 metacity was more reliable,
 # but on 18.04 icewm is more reliable when running tests)
 COPY scripts/xstartup_*.sh ${HOME}/.vnc/
-COPY scripts/xstartup_icewm.sh ${HOME}/.vnc/xstartup.sh
+COPY scripts/xstartup_metacity.sh ${HOME}/.vnc/xstartup.sh
 RUN chmod 755 ${HOME}/.vnc/xstartup*.sh
 
 ####
@@ -62,7 +58,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       zip \
       unzip \
       gnupg \
+      locales \
     && rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen en_US.UTF-8
+# Need locale to be UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
 # The version of git in Ubuntu 18.04 causes problems, so use newer git. See Bug 548519
