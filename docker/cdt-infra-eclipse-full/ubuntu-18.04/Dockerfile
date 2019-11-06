@@ -61,6 +61,8 @@ RUN apt-get install -y at-spi2-core
 RUN apt-get install -y xserver-xephyr
 
 RUN mkdir -p /var/run/dbus
+RUN chown -R 1000:0 /var/run/dbus \
+  && chmod -R g+rwX /var/run/dbus
 
 RUN apt-get install -y sudo
 RUN echo "vnc ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
