@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'cdt-9.7-149df18'
+      label 'cdt-9.7-92a2d1e'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
     }
   }

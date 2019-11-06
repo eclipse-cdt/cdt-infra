@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'cdt-verify-code-cleanliness-pipeline-149df18'
+      label 'cdt-verify-code-cleanliness-pipeline-92a2d1e'
       yamlFile 'jenkins/pod-templates/cdt-platform-sdk.yaml'
     }
   }
