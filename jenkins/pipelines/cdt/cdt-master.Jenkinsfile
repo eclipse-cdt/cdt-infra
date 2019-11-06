@@ -24,9 +24,9 @@ pipeline {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/home/vnc/.vnc/xstartup_metacity.sh ; \
                 sleep 10s; \
-                Xephyr -screen 1024x768 :51 & ; \
+                (Xephyr -screen 1024x768 :51 &) ; \
                 export DISPLAY=:51 ; \
-                metacity --sm-disable --replace & ; \
+                (metacity --sm-disable --replace &) ; \
                 /usr/share/maven/bin/mvn \
 clean verify -B -V \
   -DskipDocs \
