@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
   - name: cdt
-    image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:6a2bde05714dfe7e5ea010a8adc30070d509a83a9abf75d57387ba5173d16b90
+    image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:db5efbcfb9307286bea3b1a8a6ed9e266c19aee59cb9eeaa03f4402c1a6d63fe
     tty: true
     command: ["/bin/sh"]
     args: ["-c", "cat"]
