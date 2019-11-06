@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'cdt-9.8-standalone-debugger-92a2d1e'
+      label 'cdt-9.8-standalone-debugger-68bfe11'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
     }
   }

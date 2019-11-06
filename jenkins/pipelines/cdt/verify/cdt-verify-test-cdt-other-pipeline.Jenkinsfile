@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'cdt-verify-test-cdt-other-pipeline-92a2d1e'
+      label 'cdt-verify-test-cdt-other-pipeline-68bfe11'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
     }
   }

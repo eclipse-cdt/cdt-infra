@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'debug-remote-tests-master-gdb-8.3-92a2d1e'
+      label 'debug-remote-tests-master-gdb-8.3-68bfe11'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
     }
   }

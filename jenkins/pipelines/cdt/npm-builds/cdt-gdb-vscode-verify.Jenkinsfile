@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            label 'cdt-gdb-vscode-verify-92a2d1e'
+            label 'cdt-gdb-vscode-verify-68bfe11'
             yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
         }
     }
