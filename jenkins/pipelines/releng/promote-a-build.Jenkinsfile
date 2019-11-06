@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'promote-a-build-27a211f'
+      label 'promote-a-build-35cfe16'
       yaml """
 apiVersion: v1
 kind: Pod
