@@ -8,7 +8,7 @@ kind: Pod
 spec:
   containers:
   - name: cdt
-    image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:58049f0614b087c0eda4884496eab5c6e738436e42f8c6c772aa911bd105494b
+    image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:8d42d6a5395aa0a51c8b7f46e616f752c910b8af43a2595c9bc72708ea298a79
     tty: true
     args: ["cat"]
     resources:
