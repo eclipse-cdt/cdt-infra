@@ -4,7 +4,9 @@ set -u # run with unset flag error so that missing parameters cause build failur
 set -e # error out on any failed commands
 set -x # echo all commands used for debugging purposes
 
-SSH="ssh -o StrictHostKeyChecking=no genie.cdt@projects-storage.eclipse.org"
+SSHUSER="genie.cdt@projects-storage.eclipse.org"
+SSH="ssh ${SSHUSER}"
+SCP="scp"
 DOWNLOAD=/home/data/httpd/download.eclipse.org/tools/cdt/$RELEASE_OR_BUILD/$MINOR_VERSION/$MILESTONE
 ARTIFACTS=https://ci.eclipse.org/cdt/job/$CDT_JOB_NAME/$CDT_BUILD_NUMBER/artifact
 INDEX_PHP_FOR_RCP=scripts/cdt-standalone-php-template
