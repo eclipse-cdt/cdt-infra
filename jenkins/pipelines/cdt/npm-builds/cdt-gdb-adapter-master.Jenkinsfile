@@ -23,9 +23,6 @@ pipeline {
             sh '''
               yarn
               yarn test
-
-              #yarn publish --patch
-
               yarn pack
             '''
           }

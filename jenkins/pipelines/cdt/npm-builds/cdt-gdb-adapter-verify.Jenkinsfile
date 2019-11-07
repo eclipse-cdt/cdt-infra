@@ -31,6 +31,7 @@ pipeline {
             sh '''
               yarn
               yarn test
+              yarn pack
             '''
           }
         }
