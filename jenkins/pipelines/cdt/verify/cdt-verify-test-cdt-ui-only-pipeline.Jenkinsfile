@@ -9,20 +9,29 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
-    stage('CDT UI') {
+    stage('Git Clone') {
       steps {
         container('cdt') {
-          timeout(120) {
-            checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
+          checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
+        }
+      }
+    }
+    stage('Run build and test cdt.ui') {
+      steps {
+        container('cdt') {
+          timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh '''/usr/share/maven/bin/mvn clean verify -B -V -DskipDoc=true \
--Ddsf.gdb.tests.timeout.multiplier=50 \
--Dindexer.timeout=500 \
--Dorg.eclipse.cdt.ui.testplugin.DisplayHelper.TIMEOUT_MULTIPLIER=5 \
--f pom.xml \
--P skip-tests-except-cdt-ui \
--P baseline-compare-and-replace \
--Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml'''
+                sh "/usr/share/maven/bin/mvn \
+                      clean verify -B -V \
+                      -P skip-tests-except-cdt-ui \
+                      -DskipDoc=true \
+                      -P baseline-compare-and-replace \
+                      -Ddsf.gdb.tests.timeout.multiplier=50 \
+                      -Dindexer.timeout=300 \
+                      -P production \
+                      -Dmaven.repo.local=/home/jenkins/.m2/repository \
+                      --settings /home/jenkins/.m2/settings.xml \
+                      "
             }
           }
         }
