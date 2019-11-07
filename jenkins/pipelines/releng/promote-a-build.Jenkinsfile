@@ -59,7 +59,7 @@ spec:
   stages {
     stage('Upload') {
       steps {
-        container('releng') {
+        container('cdt') {
             sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
               git branch: 'master', url: 'https://github.com/eclipse-cdt/cdt-infra.git'
               sh './scripts/promote-a-build.sh'
