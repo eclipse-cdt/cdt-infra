@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
+      yamlFile 'jenkins/pod-templates/cdt-releng.yaml'
     }
   }
   parameters {
