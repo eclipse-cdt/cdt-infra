@@ -1,44 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      yaml """
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: cdt
-    image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:2f6bc618acd78480c555b1ece54fe3c9cd381784f065108e26f5fabf0d69cd8e
-    tty: true
-    args: ["cat"]
-    resources:
-      requests:
-        memory: "512Mi"
-        cpu: "1"
-      limits:
-        memory: "512Mi"
-        cpu: "1"
-    volumeMounts:
-    - name: settings-xml
-      mountPath: /home/jenkins/.m2/settings.xml
-      subPath: settings.xml
-      readOnly: true
-    - name: m2-repo
-      mountPath: /home/jenkins/.m2/repository
-    - name: volume-known-hosts
-      mountPath: /home/jenkins/.ssh
-  volumes:
-  - name: settings-xml
-    secret:
-      secretName: m2-secret-dir
-      items:
-      - key: settings.xml
-        path: settings.xml
-  - name: m2-repo
-    emptyDir: {}
-  - name: volume-known-hosts
-    configMap:
-      name: known-hosts
-"""
+      label: 'migration-agent'
     }
   }
   parameters {
