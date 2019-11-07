@@ -1,9 +1,6 @@
+// Based on https://wiki.eclipse.org/Jenkins#Pipeline_job_without_custom_pod_template
 pipeline {
-  agent {
-    kubernetes {
-      label 'migration-agent'
-    }
-  }
+  agent any
   parameters {
     booleanParam(defaultValue: true, description: 'Do a dry run of the build. All commands will be echoed.First run with this on, then when you are sure it is right, choose rebuild in the passing job and uncheck this box', name: 'DRY_RUN')
     choice(choices: ['cdt', 'tools.templates', 'launchbar'], description: 'Project to promote. Promoting cdt will include the cdt standalone debugger.', name: 'PROJECT')
@@ -22,11 +19,9 @@ pipeline {
   stages {
     stage('Upload') {
       steps {
-        container('cdt') {
-            sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
-              git branch: 'master', url: 'https://github.com/eclipse-cdt/cdt-infra.git'
-              sh './scripts/promote-a-build.sh'
-            }
+        sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+          git branch: 'master', url: 'https://github.com/eclipse-cdt/cdt-infra.git'
+          sh './scripts/promote-a-build.sh'
         }
       }
     }
