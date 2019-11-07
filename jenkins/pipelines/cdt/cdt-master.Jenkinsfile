@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'cdt-master-68bfe11'
+      label 'cdt-agent-pod'
       yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
     }
   }
@@ -22,20 +22,13 @@ pipeline {
         container('cdt') {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh "/home/vnc/.vnc/xstartup_metacity.sh ; \
-                sleep 1s; \
-                (Xephyr -screen 1024x768 :51 &) ; \
-                sleep 1s; \
-                export DISPLAY=:51 ; \
-                sleep 1s; \
-                (metacity --sm-disable --replace &) ; \
-                sleep 1s; \
-                /usr/share/maven/bin/mvn \
+                sh "/usr/share/maven/bin/mvn \
 clean verify -B -V \
-  -DskipDocs \
-  -Pskip-tests-except-cdt-other \
+  -P build-standalone-debugger-rcp \
+  -P baseline-compare-and-replace \
   -Ddsf.gdb.tests.timeout.multiplier=50 \
   -Dindexer.timeout=300 \
+  -P production \
   -Dmaven.repo.local=/home/jenkins/.m2/repository \
   --settings /home/jenkins/.m2/settings.xml"
             }
