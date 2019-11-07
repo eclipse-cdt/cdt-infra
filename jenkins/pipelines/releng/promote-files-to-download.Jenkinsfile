@@ -13,7 +13,7 @@ pipeline {
  stages {
     stage('Upload') {
       steps {
-        container('cdt-releng') {
+        container('releng') {
             sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
               sh './scripts/promote-files-to-download.sh'
             }
