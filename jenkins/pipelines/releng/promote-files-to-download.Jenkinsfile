@@ -1,9 +1,6 @@
+// Based on https://wiki.eclipse.org/Jenkins#Pipeline_job_without_custom_pod_template
 pipeline {
-  agent {
-    kubernetes {
-      yamlFile 'jenkins/pod-templates/cdt-releng.yaml'
-    }
-  }
+  agent any
   parameters {
     booleanParam(defaultValue: true, description: 'Do a dry run of the build. All commands will be echoed.First run with this on, then when you are sure it is right, choose rebuild in the passing job and uncheck this box', name: 'DRY_RUN')
   }
