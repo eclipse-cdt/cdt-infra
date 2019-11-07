@@ -1,44 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      yaml """
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: cdt
-    image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:8d42d6a5395aa0a51c8b7f46e616f752c910b8af43a2595c9bc72708ea298a79
-    tty: true
-    args: ["cat"]
-    resources:
-      requests:
-        memory: "512Mi"
-        cpu: "1"
-      limits:
-        memory: "512Mi"
-        cpu: "1"
-    volumeMounts:
-    - name: settings-xml
-      mountPath: /home/jenkins/.m2/settings.xml
-      subPath: settings.xml
-      readOnly: true
-    - name: m2-repo
-      mountPath: /home/jenkins/.m2/repository
-    - name: volume-known-hosts
-      mountPath: /home/jenkins/.ssh
-  volumes:
-  - name: settings-xml
-    secret:
-      secretName: m2-secret-dir
-      items:
-      - key: settings.xml
-        path: settings.xml
-  - name: m2-repo
-    emptyDir: {}
-  - name: volume-known-hosts
-    configMap:
-      name: known-hosts
-"""
+      yamlFile 'jenkins/pod-templates/cdt-full-pod-standard.yaml'
     }
   }
   parameters {
@@ -50,7 +13,7 @@ spec:
  stages {
     stage('Upload') {
       steps {
-        container('cdt') {
+        container('cdt-releng') {
             sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
               sh './scripts/promote-files-to-download.sh'
             }
