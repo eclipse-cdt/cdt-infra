@@ -9,11 +9,17 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
+    stage('Git Clone') {
+      steps {
+        container('cdt') {
+          git branch: 'master', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git'
+        }
+      }
+    }
     stage('Code Formatting Checks') {
       steps {
         container('platform-sdk') {
-          timeout(20) {
-            git branch: 'master', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git'
+          timeout(activity: true, time: 20) {
             sh './releng/scripts/check_code_cleanliness.sh'
           }
         }

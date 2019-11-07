@@ -22,14 +22,15 @@ pipeline {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/usr/share/maven/bin/mvn \
-clean verify -B -V \
-  -P build-standalone-debugger-rcp \
-  -P baseline-compare-and-replace \
-  -Ddsf.gdb.tests.timeout.multiplier=50 \
-  -Dindexer.timeout=300 \
-  -P production \
-  -Dmaven.repo.local=/home/jenkins/.m2/repository \
-  --settings /home/jenkins/.m2/settings.xml"
+                      clean verify -B -V \
+                      -P build-standalone-debugger-rcp \
+                      -P baseline-compare-and-replace \
+                      -Ddsf.gdb.tests.timeout.multiplier=50 \
+                      -Dindexer.timeout=300 \
+                      -P production \
+                      -Dmaven.repo.local=/home/jenkins/.m2/repository \
+                      --settings /home/jenkins/.m2/settings.xml \
+                      "
             }
           }
         }
