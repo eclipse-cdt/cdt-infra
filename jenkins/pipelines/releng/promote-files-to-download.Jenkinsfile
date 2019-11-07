@@ -7,13 +7,11 @@ pipeline {
   options {
     timestamps()
   }
- stages {
+  stages {
     stage('Upload') {
       steps {
-        container('releng') {
-            sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
-              sh './scripts/promote-files-to-download.sh'
-            }
+        sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+          sh './scripts/promote-files-to-download.sh'
         }
       }
     }
