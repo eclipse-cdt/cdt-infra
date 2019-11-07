@@ -1,43 +1,48 @@
 pipeline {
-    agent {
-        kubernetes {
-            yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
+  agent {
+    kubernetes {
+      yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
+    }
+  }
+  options {
+    timestamps()
+    disableConcurrentBuilds()
+  }
+  stages {
+    stage('Git Clone') {
+      steps {
+        container('cdt') {
+          checkout([
+            $class: 'GitSCM',
+            branches:
+            [[name: '${sha1}']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            submoduleCfg: [],
+            userRemoteConfigs: [[refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
+            url: 'https://github.com/eclipse-cdt/cdt-gdb-adapter']]])
         }
+      }
     }
-    options {
-        timestamps()
-        disableConcurrentBuilds()
-    }
-    stages {
-        stage('Run build') {
-            steps {
-                container('cdt') {
-                    checkout([
-                        $class: 'GitSCM',
-                        branches:
-                        [[name: '${sha1}']],
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions: [],
-                        submoduleCfg: [],
-                        userRemoteConfigs: [[refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
-                        url: 'https://github.com/eclipse-cdt/cdt-gdb-adapter']]])
-                    timeout(activity: true, time: 20) {
-                        sh '''
-yarn
-yarn build
-yarn test
-                        '''
-                        junit 'test-reports/*.xml'
-                    }
-                }
-            }
+    stage('Run build') {
+      steps {
+        container('cdt') {
+          timeout(activity: true, time: 20) {
+            sh '''
+              yarn
+              yarn test
+            '''
+          }
         }
+      }
     }
-    post {
-        always {
-            container('cdt') {
-                archiveArtifacts '**'
-            }
-        }
+  }
+  post {
+    always {
+      container('cdt') {
+        junit 'test-reports/*.xml'
+        archiveArtifacts 'cdt-gdb-adapter-*.tgz'
+      }
     }
+  }
 }

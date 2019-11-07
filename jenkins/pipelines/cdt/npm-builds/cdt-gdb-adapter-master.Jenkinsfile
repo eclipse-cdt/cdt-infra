@@ -1,33 +1,44 @@
 pipeline {
-    agent {
-        kubernetes {
-            yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
+  agent {
+    kubernetes {
+      yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
+    }
+  }
+  options {
+    timestamps()
+    disableConcurrentBuilds()
+  }
+  stages {
+    stage('Git Clone') {
+      steps {
+        container('cdt') {
+          git branch: 'master', url: 'https://github.com/eclipse-cdt/cdt-gdb-adapter'
         }
+      }
     }
-    options {
-        timestamps()
-        disableConcurrentBuilds()
-    }
-    stages {
-        stage('Run build') {
-            steps {
-                container('cdt') {
-                    git branch: 'master', url: 'https://github.com/eclipse-cdt/cdt-gdb-adapter'
-                    timeout(activity: true, time: 20) {
-                        sh '''
-yarn
-yarn build
-yarn test
+    stage('Run build') {
+      steps {
+        container('cdt') {
+          timeout(activity: true, time: 20) {
+            sh '''
+              yarn
+              yarn test
 
-#yarn publish --patch
+              #yarn publish --patch
 
-yarn pack
-                        '''
-                        junit 'test-reports/*.xml'
-                        archiveArtifacts 'cdt-gdb-adapter-*.tgz'
-                    }
-                }
-            }
+              yarn pack
+            '''
+          }
         }
+      }
     }
+  }
+  post {
+    always {
+      container('cdt') {
+        junit 'test-reports/*.xml'
+        archiveArtifacts 'cdt-gdb-adapter-*.tgz'
+      }
+    }
+  }
 }
