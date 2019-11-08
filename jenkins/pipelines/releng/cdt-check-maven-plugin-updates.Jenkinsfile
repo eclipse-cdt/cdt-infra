@@ -21,7 +21,7 @@ pipeline {
         container('cdt') {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-              sh './releng/scripts/check_code_cleanliness.sh'
+              sh './releng/scripts/check_mvn_plugin_versions.sh'
             }
           }
         }
