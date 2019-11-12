@@ -20,8 +20,7 @@ for image in $images; do
     docker push ${namespace}/${image}-${shorthash}
     nameonly=$(echo $image | sed -es,:.*,,)
     docker tag $image ${namespace}/${nameonly}:latest
-    # Temporarily disable pushing latest until we have a new stable
-    # docker push ${namespace}/${nameonly}:latest
+    docker push ${namespace}/${nameonly}:latest
 done
 
 echo "The following images have been pushed."
