@@ -52,7 +52,7 @@ pipeline {
             withCredentials([string(credentialsId: 'npmjs-token', variable: 'NPMJSTOKEN')]) {
               sh '''
                 set +x
-                echo "//registry.npmjs.org/:_authToken=$NPMJSTOKEN" >> ~/.npmrc
+                echo "//registry.npmjs.org/:_authToken=$NPMJSTOKEN" >> .npmrc
                 set -x
                 npm whoami
                 yarn pack
