@@ -54,6 +54,7 @@ pipeline {
                 set +x
                 echo "//registry.npmjs.org/:_authToken=$NPMJSTOKEN" >> ~/.npmrc
                 set -x
+                npm whoami
                 yarn pack
                 yarn version  --no-git-tag-version --prerelease --preid=next.$(git rev-parse --short HEAD)
                 yarn publish --non-interactive --tag next
