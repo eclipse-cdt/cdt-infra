@@ -29,7 +29,7 @@ pipeline {
   post {
     always {
       container('cdt') {
-        archiveArtifacts '/home/vnc/.npm/_logs'
+        archiveArtifacts '/home/vnc/.npm/_logs/**'
       }
     }
   }
