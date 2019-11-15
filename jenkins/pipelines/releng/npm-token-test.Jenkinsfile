@@ -15,9 +15,7 @@ pipeline {
           timeout(activity: true, time: 20) {
             withCredentials([string(credentialsId: 'npmjs-token', variable: 'NPMJSTOKEN')]) {
               sh '''
-                echo "//registry.npmjs.org/:_authToken=${NPMJSTOKEN}" >> ~/.npmrc
-                echo "email eclipse-cdt-bot@eclipse.org" > ~/.yarnrc
-                echo "username eclipse-cdt-bot" >> ~/.yarnrc
+                echo "//registry.npmjs.org/:_authToken=${NPMJSTOKEN}" >> .npmrc
                 npm whoami
               '''
             }
