@@ -16,7 +16,18 @@ pipeline {
         }
       }
     }
-    stage('Run build') {
+    stage('build') {
+      steps {
+        container('cdt') {
+          timeout(activity: true, time: 20) {
+            sh '''
+              yarn
+            '''
+          }
+        }
+      }
+    }
+    stage('test') {
       steps {
         container('cdt') {
           timeout(activity: true, time: 20) {
@@ -25,8 +36,28 @@ pipeline {
               yarn test
               yarn pack
               yarn version  --no-git-tag-version --prerelease --preid=next.$(git rev-parse --short HEAD)
+              set +x
+              echo "//registry.npmjs.org/:_authToken=${npmjs-token}" >> ~/.npmrc
+              set -x
               yarn publish --non-interactive --tag next
             '''
+          }
+        }
+      }
+    stage('publish') {
+      steps {
+        container('cdt') {
+          timeout(activity: true, time: 20) {
+            withCredentials([string(credentialsId: 'npmjs-token', variable: 'NPMJSTOKEN')]) {
+              sh '''
+                set +x
+                echo "//registry.npmjs.org/:_authToken=$NPMJSTOKEN" >> ~/.npmrc
+                set -x
+                yarn pack
+                yarn version  --no-git-tag-version --prerelease --preid=next.$(git rev-parse --short HEAD)
+                yarn publish --non-interactive --tag next
+              '''
+            }
           }
         }
       }
