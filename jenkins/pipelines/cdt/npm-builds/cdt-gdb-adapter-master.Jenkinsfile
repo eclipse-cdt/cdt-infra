@@ -44,6 +44,7 @@ pipeline {
           }
         }
       }
+    }
     stage('publish') {
       steps {
         container('cdt') {
