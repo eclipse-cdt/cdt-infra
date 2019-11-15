@@ -24,6 +24,8 @@ pipeline {
               yarn
               yarn test
               yarn pack
+              yarn version  --no-git-tag-version --prerelease --preid=next.$(git rev-parse --short HEAD)
+              yarn publish --non-interactive --tag next
             '''
           }
         }
