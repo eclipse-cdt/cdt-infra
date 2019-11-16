@@ -44,13 +44,13 @@ pipeline {
           timeout(activity: true, time: 20) {
             withCredentials([string(credentialsId: 'npmjs-token', variable: 'NPMJSTOKEN')]) {
               sh '''
-                echo "//registry.npmjs.org/:_authToken=${NPMJSTOKEN}" >> ~/.npmrc
-                echo "email eclipse-cdt-bot@eclipse.org" > ~/.yarnrc
-                echo "username eclipse-cdt-bot" >> ~/.yarnrc
-                npm whoami
+                // echo "//registry.npmjs.org/:_authToken=${NPMJSTOKEN}" >> ~/.npmrc
+                // echo "email eclipse-cdt-bot@eclipse.org" > ~/.yarnrc
+                // echo "username eclipse-cdt-bot" >> ~/.yarnrc
+                // npm whoami
                 yarn pack
-                yarn version  --no-git-tag-version --prerelease --preid=next.$(git rev-parse --short HEAD)
-                yarn publish --non-interactive --tag next
+                // yarn version  --no-git-tag-version --prerelease --preid=next.$(git rev-parse --short HEAD)
+                // yarn publish --non-interactive --tag next
               '''
             }
           }
