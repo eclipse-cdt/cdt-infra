@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      yamlFile 'jenkins/pod-templates/cdt-full-pod-small.yaml'
+      yamlFile 'jenkins/pod-templates/cdt-platform-sdk.yaml'
     }
   }
   options {
@@ -9,21 +9,43 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
-    stage('Launchbar Verify') {
+    stage('Git Clone') {
       steps {
-        container('cdt') {
-          timeout(120) {
-            checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.tools.templates.git']]])
-            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh """/usr/share/maven/bin/mvn \
-clean verify -B -V \
--Dmaven.repo.local=/home/jenkins/.m2/repository --settings /home/jenkins/.m2/settings.xml"""
-            }
-
-            junit allowEmptyResults: true,  testResults: '**/TEST-*.xml'
-            archiveArtifacts allowEmptyArchive: true, artifacts: '**/screenshots/*.jpeg,**/target/**/*.log'
+        container('platform-sdk') {
+          checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.tools.templates.git']]])
+        }
+      }
+    }
+    stage('Code Formatting Checks') {
+      steps {
+        container('platform-sdk') {
+          timeout(activity: true, time: 20) {
+            sh './check_code_cleanliness.sh'
           }
         }
+      }
+    }
+    stage('tools.template Verify') {
+      steps {
+        container('platform-sdk') {
+          timeout(activity: true, time: 20) {
+            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+                sh "/usr/share/maven/bin/mvn \
+                      clean verify -B -V \
+                      -Dmaven.repo.local=/home/jenkins/.m2/repository \
+                      --settings /home/jenkins/.m2/settings.xml \
+                      "
+            }
+          }
+        }
+      }
+    }
+  }
+  post {
+    always {
+      container('platform-sdk') {
+        junit '**/TEST-*.xml'
+        archiveArtifacts '**/screenshots/*.jpeg,**/target/**/*.log'
       }
     }
   }
