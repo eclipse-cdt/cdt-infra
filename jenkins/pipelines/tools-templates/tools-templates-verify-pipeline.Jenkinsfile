@@ -44,7 +44,7 @@ pipeline {
   post {
     always {
       container('platform-sdk') {
-        junit '**/TEST-*.xml'
+        junit allowEmptyResults: true, '**/TEST-*.xml'
         archiveArtifacts '**/screenshots/*.jpeg,**/target/**/*.log'
       }
     }
