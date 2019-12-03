@@ -62,7 +62,7 @@ pipeline {
     always {
       container('cdt') {
         junit 'test-reports/*.xml'
-        archiveArtifacts 'cdt-gdb-adapter-*.tgz'
+        archiveArtifacts 'cdt-gdb-adapter-*.tgz,src/integration-tests/testlogs/**'
       }
     }
   }
