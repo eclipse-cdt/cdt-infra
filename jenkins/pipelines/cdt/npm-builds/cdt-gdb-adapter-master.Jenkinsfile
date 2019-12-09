@@ -49,7 +49,7 @@ pipeline {
                 echo "username eclipse-cdt-bot" >> ~/.yarnrc
                 npm whoami
                 yarn pack
-                yarn version  --no-git-tag-version --prerelease --preid=next.$(git rev-parse --short HEAD)
+                yarn version  --no-git-tag-version --prerelease --preid=next.$(date -u "+%Y%m%d%H%M%S").$(git rev-parse --short HEAD)
                 yarn publish --non-interactive --tag next
               '''
             }
