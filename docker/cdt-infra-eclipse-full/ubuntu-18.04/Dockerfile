@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       gcc-mingw-w64-x86-64 \
       clang \
     && apt-get install -y llvm \
+    && apt-get install -y --no-install-recommends texinfo bison flex \
     && rm -rf /var/lib/apt/lists/* \
     && pip3 install --upgrade pip
 
