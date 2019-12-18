@@ -21,3 +21,4 @@ fi
 $ECHO $SCP ./download/releases/9.7/* "${SSHUSER}:${DOWNLOAD}/releases/9.7/"
 $ECHO $SCP ./download/releases/9.8/* "${SSHUSER}:${DOWNLOAD}/releases/9.8/"
 $ECHO $SCP ./download/releases/9.9/* "${SSHUSER}:${DOWNLOAD}/releases/9.9/"
+$ECHO $SCP ./download/releases/9.10/* "${SSHUSER}:${DOWNLOAD}/releases/9.10/"
