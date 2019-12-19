@@ -12,7 +12,8 @@ pipeline {
     stage('Git Clone') {
       steps {
         container('cdt') {
-          checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
+          /* Unlike other veify jobs, this one does baseline-compare-and-replace, which means it needs full depth on git clone */
+          checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']], [$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: false]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
         }
       }
     }
@@ -21,6 +22,7 @@ pipeline {
         container('cdt') {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+                /* Unlike other veify jobs, this one does baseline-compare-and-replace, which means it needs full depth on git clone */
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -P skip-tests-except-cdt-other \
