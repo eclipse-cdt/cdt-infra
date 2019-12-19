@@ -23,6 +23,7 @@ pipeline {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
+                      -P build-standalone-debugger-rcp \
                       -P skip-tests-except-cdt-ui \
                       -DskipDoc=true \
                       -P baseline-compare-and-replace \
