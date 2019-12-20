@@ -131,5 +131,5 @@ else
         echo "This is the log:"
         cat /tmp/baseline-compare-and-replace.log
     fi
+    exit 1
 fi
-rm /tmp/baseline-compare-and-replace.log
