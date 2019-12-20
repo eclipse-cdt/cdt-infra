@@ -9,10 +9,10 @@ spec:
     args: ["-c", "/home/vnc/.vnc/xstartup.sh && cat"]
     resources:
       requests:
-        memory: "1Gi"
+        memory: "2.6Gi"
         cpu: "1"
       limits:
-        memory: "1Gi"
+        memory: "2.6Gi"
         cpu: "1"
     volumeMounts:
     - name: settings-xml
