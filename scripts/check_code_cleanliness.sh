@@ -114,7 +114,7 @@ fi
 ##
 # Make sure all versions have been bumped appropriately compared to the baseline
 ##
-echo "Running 'mvn verify -P baseline-compare-and-replace' to make sure all versions have been appropriately"
+echo "Running 'mvn verify -P baseline-compare-and-replace' to make sure all versions have been appropriately incremented"
 if ${MVN:-mvn} \
         clean verify -B -V \
         -DskipDoc=true \
