@@ -110,3 +110,26 @@ else
     echo "Tree is dirty - something needs to be cleaned up in your commit (see above for git status/diff)"
     exit 1
 fi
+
+##
+# Make sure all versions have been bumped appropriately compared to the baseline
+##
+echo "Running 'mvn verify -P baseline-compare-and-replace' to make sure all versions have been appropriately"
+if ${MVN:-mvn} \
+        clean verify -B -V \
+        -DskipDoc=true \
+        -DskipTests=true \
+        -P baseline-compare-and-replace >/tmp/baseline-compare-and-replace.log 2>&1; then
+    echo "Maven check all versions have been bumped appropriately appears to have completed successfully"
+else
+    if grep "Only qualifier changed" /tmp/baseline-compare-and-replace.log > /dev/null; then
+        bundle=$(grep "Only qualifier changed" /tmp/baseline-compare-and-replace.log | sed -e 's/^.*Only qualifier changed for .//' -e 's@/.*@@')
+        echo "Bundle '${bundle}' is missing a service segment version bump. Please bump by 100 if on master branch"
+        echo "See: https://wiki.eclipse.org/Version_Numbering#When_to_change_the_service_segment"
+    else
+        echo "Maven check all versions have been bumped appropriately failed!"
+        echo "This is the log:"
+        cat /tmp/baseline-compare-and-replace.log
+    fi
+fi
+rm /tmp/baseline-compare-and-replace.log
