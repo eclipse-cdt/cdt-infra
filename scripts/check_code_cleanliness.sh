@@ -96,8 +96,8 @@ if test -e native/org.eclipse.cdt.native.serial/jni; then
     echo "Rebuilding natives to make sure they match source"
     logfile=$(mktemp /tmp/make-natives-log.XXXXXX)
     if ! make -C native/org.eclipse.cdt.native.serial/jni rebuild >${logfile} 2>&1; then
-        echo "Rebuilding of natives failed - make output follows"
-        cat ${logfile}
+        echo "Rebuilding of natives failed. The log is part of the artifacts of the build"
+        cp ${logfile} make-natives.log
         exit 1
     fi
 fi
@@ -131,12 +131,24 @@ if ${MVN:-mvn} \
 else
     if grep "Only qualifier changed" ${logfile} > /dev/null; then
         bundle=$(grep "Only qualifier changed" ${logfile} | sed -e 's/^.*Only qualifier changed for .//' -e 's@/.*@@')
-        echo "Bundle '${bundle}' is missing a service segment version bump. Please bump by 100 if on master branch"
+        echo "Bundle '${bundle}' is missing a service segment version bump"
+        echo "Please bump service segment by 100 if on master branch"
+        echo "The log of this build is part of the artifacts"
+        echo "See: https://wiki.eclipse.org/Version_Numbering#When_to_change_the_service_segment"
+    if grep "baseline and build artifacts have same version but different contents" ${logfile} > /dev/null; then
+        bundle=$(grep "baseline and build artifacts have same version but different contents" ${logfile} | sed -e 's/^.* on project //' -e 's@: baseline@@')
+        echo "Bundle '${bundle}' has same version as baseline, but different contents"
+        echo "This can happen for a variety of reasons:"
+        echo "  - The comparison filters in the root pom.xml are not working"
+        echo "  - Different versions of Java are being used to compile compared to the baseline"
+        echo "  - A dependency has changed causing the generated classes to be different"
+        echo "The log of this build is part of the artifacts"
+        echo "Please bump service segment by 100 if on master branch"
         echo "See: https://wiki.eclipse.org/Version_Numbering#When_to_change_the_service_segment"
     else
-        echo "Maven check all versions have been bumped appropriately failed!"
-        echo "This is the log:"
-        cat ${logfile}
+        echo "Maven 'check all versions have been bumped appropriately' failed!"
+        echo "The log of this build is part of the artifacts"
     fi
+    cp ${logfile} baseline-compare-and-replace.log
     exit 1
 fi

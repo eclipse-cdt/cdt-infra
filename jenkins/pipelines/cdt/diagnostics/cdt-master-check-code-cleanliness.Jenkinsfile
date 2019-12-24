@@ -20,9 +20,17 @@ pipeline {
       steps {
         container('platform-sdk') {
           timeout(activity: true, time: 20) {
-            sh './releng/scripts/check_code_cleanliness.sh'
+            sh 'MVN="/usr/share/maven/bin/mvn -Dmaven.repo.local=/home/jenkins/.m2/repository \
+                      --settings /home/jenkins/.m2/settings.xml" ./releng/scripts/check_code_cleanliness.sh'
           }
         }
+      }
+    }
+  }
+  post {
+    always {
+      container('cdt') {
+        archiveArtifacts allowEmptyArchive: true, artifacts: '*.log'
       }
     }
   }

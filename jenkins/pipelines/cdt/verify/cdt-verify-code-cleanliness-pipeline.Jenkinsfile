@@ -27,4 +27,11 @@ pipeline {
       }
     }
   }
+  post {
+    always {
+      container('cdt') {
+        archiveArtifacts allowEmptyArchive: true, artifacts: '*.log'
+      }
+    }
+  }
 }
