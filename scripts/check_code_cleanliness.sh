@@ -135,7 +135,7 @@ else
         echo "Please bump service segment by 100 if on master branch"
         echo "The log of this build is part of the artifacts"
         echo "See: https://wiki.eclipse.org/Version_Numbering#When_to_change_the_service_segment"
-    if grep "baseline and build artifacts have same version but different contents" ${logfile} > /dev/null; then
+    elif grep "baseline and build artifacts have same version but different contents" ${logfile} > /dev/null; then
         bundle=$(grep "baseline and build artifacts have same version but different contents" ${logfile} | sed -e 's/^.* on project //' -e 's@: baseline@@')
         echo "Bundle '${bundle}' has same version as baseline, but different contents"
         echo "This can happen for a variety of reasons:"
