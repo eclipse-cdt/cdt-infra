@@ -93,7 +93,13 @@ done
 # Make sure that natives are up to date
 ##
 if test -e native/org.eclipse.cdt.native.serial/jni; then
-    make -C native/org.eclipse.cdt.native.serial/jni rebuild
+    echo "Rebuilding natives to make sure they match source"
+    logfile=$(mktemp /tmp/make-natives-log.XXXXXX)
+    if ! make -C native/org.eclipse.cdt.native.serial/jni rebuild >${logfile} 2>&1; then
+        echo "Rebuilding of natives failed - make output follows"
+        cat ${logfile}
+        exit 1
+    fi
 fi
 
 ##
@@ -115,21 +121,22 @@ fi
 # Make sure all versions have been bumped appropriately compared to the baseline
 ##
 echo "Running 'mvn verify -P baseline-compare-and-replace' to make sure all versions have been appropriately incremented"
+logfile=$(mktemp /tmp/baseline-compare-and-replace.XXXXXX)
 if ${MVN:-mvn} \
         clean verify -B -V \
         -DskipDoc=true \
         -DskipTests=true \
-        -P baseline-compare-and-replace >/tmp/baseline-compare-and-replace.log 2>&1; then
+        -P baseline-compare-and-replace >${logfile} 2>&1; then
     echo "Maven check all versions have been bumped appropriately appears to have completed successfully"
 else
-    if grep "Only qualifier changed" /tmp/baseline-compare-and-replace.log > /dev/null; then
-        bundle=$(grep "Only qualifier changed" /tmp/baseline-compare-and-replace.log | sed -e 's/^.*Only qualifier changed for .//' -e 's@/.*@@')
+    if grep "Only qualifier changed" ${logfile} > /dev/null; then
+        bundle=$(grep "Only qualifier changed" ${logfile} | sed -e 's/^.*Only qualifier changed for .//' -e 's@/.*@@')
         echo "Bundle '${bundle}' is missing a service segment version bump. Please bump by 100 if on master branch"
         echo "See: https://wiki.eclipse.org/Version_Numbering#When_to_change_the_service_segment"
     else
         echo "Maven check all versions have been bumped appropriately failed!"
         echo "This is the log:"
-        cat /tmp/baseline-compare-and-replace.log
+        cat ${logfile}
     fi
     exit 1
 fi
