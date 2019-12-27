@@ -27,7 +27,6 @@ pipeline {
                       -DskipDoc=true \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
                       -Dindexer.timeout=300 \
-                      -P production \
                       -Dmaven.repo.local=/home/jenkins/.m2/repository \
                       --settings /home/jenkins/.m2/settings.xml \
                       "
