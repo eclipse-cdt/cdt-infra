@@ -12,6 +12,7 @@ pipeline {
     stage('Git Clone') {
       steps {
         container('cdt') {
+          /* Unlike other veify jobs, this one does baseline-compare-and-replace, which means it needs full depth on git clone */
           checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']], [$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '']], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
         }
       }
