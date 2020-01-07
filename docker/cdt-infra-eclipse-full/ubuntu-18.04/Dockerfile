@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       gdbserver \
       gcc-mingw-w64-x86-64 \
       clang \
+      xserver-xephyr \
     && apt-get install -y llvm \
     && apt-get install -y --no-install-recommends texinfo bison flex \
     && rm -rf /var/lib/apt/lists/* \
@@ -57,7 +58,6 @@ ENV PATH="/opt/osxcross/target/bin:${PATH}"
 #Fix permissions for OpenShift & standard k8s
 RUN chown -R 1000:0 ${HOME} \
   && chmod -R g+rwX ${HOME}
-RUN apt-get update && apt-get install -y xserver-xephyr
 
 
 ENV USER_NAME vnc
