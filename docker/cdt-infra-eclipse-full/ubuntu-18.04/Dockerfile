@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       gcc-mingw-w64-x86-64 \
       clang \
       libxml2-utils \
+      gettext-base \
       xserver-xephyr \
     && apt-get install -y llvm \
     && apt-get install -y --no-install-recommends texinfo bison flex \
