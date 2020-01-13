@@ -10,17 +10,7 @@ SCP="scp"
 DOWNLOAD=/home/data/httpd/download.eclipse.org/tools/cdt/$RELEASE_OR_BUILD/$MINOR_VERSION/$MILESTONE
 ARTIFACTS=https://ci.eclipse.org/cdt/job/$CDT_JOB_NAME/$CDT_BUILD_NUMBER/artifact
 INDEX_PHP_FOR_RCP=scripts/cdt-standalone-php-template
-
-if [ "$PROJECT" == "cdt" ]; then
-    ARTIFACTS_REPO_TARGET=$ARTIFACTS/releng/org.eclipse.cdt.repo/target
-elif [ "$PROJECT" == "tools.templates" ]; then
-    ARTIFACTS_REPO_TARGET=$ARTIFACTS/repo/target
-elif [ "$PROJECT" == "launchbar" ]; then
-    ARTIFACTS_REPO_TARGET=$ARTIFACTS/repo/target
-else
-    echo "Missing repo location of $PROJECT"
-    exit 1
-fi
+ARTIFACTS_REPO_TARGET=$ARTIFACTS/releng/org.eclipse.cdt.repo/target
 
 echo Using download location root of $DOWNLOAD
 echo Using artifacts location root of $ARTIFACTS
@@ -53,12 +43,12 @@ if [ "$STANDALONE_ONLY" == "false" ]; then
         rm -r repository repository.zip"
 
     $ECHO $SSH "cd $DOWNLOAD && \
-        wget -q $ARTIFACTS_REPO_TARGET/org.eclipse.$PROJECT.repo.zip && \
-        mv org.eclipse.$PROJECT.repo.zip $MILESTONE.zip"
+        wget -q $ARTIFACTS_REPO_TARGET/org.eclipse.cdt.repo.zip && \
+        mv org.eclipse.cdt.repo.zip $MILESTONE.zip"
 fi
 
 # promote standalone debugger
-if [ "$PROJECT" == "cdt" ] && [ "$STANDALONE" == "true" ]; then
+if [ "$STANDALONE" == "true" ]; then
     $ECHO $SSH "mkdir -p $DOWNLOAD/rcp"
 
     $ECHO $SSH "cd $DOWNLOAD/rcp && \
