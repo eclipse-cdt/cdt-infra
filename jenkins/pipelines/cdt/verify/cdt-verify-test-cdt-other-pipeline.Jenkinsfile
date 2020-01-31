@@ -39,7 +39,7 @@ pipeline {
   post {
     always {
       container('cdt') {
-        junit '*/*/target/surefire-reports/*.xml'
+        junit '*/*/target/surefire-reports/*.xml,terminal/plugins/org.eclipse.tm.terminal.test/target/surefire-reports/*.xml'
         /* Unlike other veify jobs, this one archives the p2 repos and standalone debugger, the
          * same archive as the master job. This enables testing a fully built project without
          * having to merge
