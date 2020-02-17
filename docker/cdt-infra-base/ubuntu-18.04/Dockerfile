@@ -8,10 +8,11 @@ COPY scripts/uid_entrypoint /usr/local/bin/uid_entrypoint
 RUN chmod u+x /usr/local/bin/uid_entrypoint && \
     chgrp 0 /usr/local/bin/uid_entrypoint && \
     chmod g=u /usr/local/bin/uid_entrypoint /etc/passwd
-ENTRYPOINT [ "uid_entrypoint" ]
+ENTRYPOINT [ "uid_entrypoint", "dumb-init" ]
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
+      dumb-init \
       libgtk-3-0=3.22.* \
       tigervnc-standalone-server \
       tigervnc-common \

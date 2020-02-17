@@ -5,8 +5,7 @@ spec:
   - name: cdt
     image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:88c1bcdcb29577547df7c5af80603a35fbc9edff832422e1a462573be60b3983
     tty: true
-    command: ["/bin/sh"]
-    args: ["-c", "/home/vnc/.vnc/xstartup.sh && cat"]
+    args: ["/home/vnc/.vnc/xstartup.sh", "cat"]
     resources:
       requests:
         memory: "1.75Gi"
