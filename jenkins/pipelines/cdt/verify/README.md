@@ -6,7 +6,7 @@ The Verify Pipelines are configured on the CDT CI instance on: https://ci.eclips
 
 ## CDT Verify Code Cleanliness
 
-[cdt-verify-code-cleanliness-pipeline](cdt-verify-code-cleanliness-pipeline.Jenkinsfile) runs a series of checks on the code base to ensure that the code base to ensure that various rules (such as formatting, whitespace and version number bumping) are respected in the gerrit patch. See the [script](../../../../scripts/check_code_cleanliness.sh) for details.
+[cdt-verify-code-cleanliness-pipeline](cdt-verify-code-cleanliness-pipeline.Jenkinsfile) runs a series of checks on the code base to ensure that the code base to ensure that various rules (such as formatting, whitespace and version number bumping) are respected in the gerrit patch. See the [script](https://git.eclipse.org/c/cdt/org.eclipse.cdt.git/tree/releng/scripts/check_code_cleanliness.sh) for details.
 
 ## CDT Verify Test jobs
 
