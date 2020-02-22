@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
   - name: platform-sdk
-    image: quay.io/eclipse-cdt/cdt-infra-platform-sdk@sha256:ccc2819cfd1691cce764870002b2ba7ade8ad313281806b8260abd309b4ba8bb
+    image: quay.io/eclipse-cdt/cdt-infra-platform-sdk@sha256:f2e6e6d9ed3d65bca178a16ab0a40b92c02a2222983cd7e03294c36f2cd764e2
     tty: true
     args: ["/home/vnc/.vnc/xstartup.sh", "cat"]
     resources:
