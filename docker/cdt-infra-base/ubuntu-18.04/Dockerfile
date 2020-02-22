@@ -1,6 +1,8 @@
-# This file is derived from https://github.com/eclipse-cbi/dockerfiles/blob/d35a1ccdc3c1ac5b2faf2495605ab34c96d0c1a1/ubuntu-gtk3-metacity/18.04-gtk3.22/Dockerfile
-# Consult https://github.com/eclipse-cbi/dockerfiles/blob/master/ubuntu-gtk3-metacity/18.04-gtk3.22/Dockerfile for possible updates - differences
-# from source are commented
+# This file is derived from:
+# - https://github.com/eclipse-cbi/dockerfiles/blob/bf1f1a18f4910d007de67765f8df083102150a7c/distros/Dockerfile
+# - https://github.com/eclipse-cbi/dockerfiles/blob/bf1f1a18f4910d007de67765f8df083102150a7c/gtk3-wm/ubuntu-metacity/18.04/Dockerfile
+# Consult https://github.com/eclipse-cbi/dockerfiles for possible updates
+# differences from source are commented
 FROM ubuntu:18.04
 
 ### user name recognition at runtime w/ an arbitrary uid - for OpenShift deployments
@@ -12,7 +14,7 @@ ENTRYPOINT [ "uid_entrypoint" ]
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      libgtk-3-0=3.22.* \
+      libgtk-3-0 \
       tigervnc-standalone-server \
       tigervnc-common \
       metacity \
