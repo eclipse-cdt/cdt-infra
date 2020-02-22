@@ -9,6 +9,18 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
+    stage('Process info') {
+      steps {
+        container('cdt') {
+          timeout(activity: true, time: 20) {
+            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+                sh "ps -AHf"
+                sh "cat /etc/passwd | tail -1"
+            }
+          }
+        }
+      }
+    }
     stage('Git Clone') {
       steps {
         container('cdt') {
