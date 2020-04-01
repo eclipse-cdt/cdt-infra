@@ -8,11 +8,11 @@ spec:
     args: ["/bin/sh", "-c", "/home/vnc/.vnc/xstartup.sh && cat"]
     resources:
       requests:
-        memory: "2.6Gi"
-        cpu: "1.3"
+        memory: "3Gi"
+        cpu: "2"
       limits:
-        memory: "2.6Gi"
-        cpu: "1.3"
+        memory: "3Gi"
+        cpu: "2"
     volumeMounts:
     - name: settings-xml
       mountPath: /home/jenkins/.m2/settings.xml
