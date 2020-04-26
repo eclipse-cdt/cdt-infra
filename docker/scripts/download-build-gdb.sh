@@ -32,7 +32,7 @@ default_jlevel="4"
 jlevel="${default_jlevel}"
 
 # Supported versions
-default_versions="8.3.1 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1 7.4.1 7.3.1 7.2 7.1 7.0.1 6.8 6.7.1 6.6"
+default_versions="9.1 8.3.1 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1 7.4.1 7.3.1 7.2 7.1 7.0.1 6.8 6.7.1 6.6"
 
 # Is set to "echo" if we are doing a dry-run.
 dryrun=""
@@ -137,11 +137,11 @@ function extract_gdb() {
 
   local archive="${download_dir}/gdb-${version}.tar.gz"
 
-  echo_header "Extracting ${archive} to ${build_dir}"
+  echo_header "Extracting ${archive} to ${src_dir}"
 
-  ${dryrun} mkdir -p "${build_dir}"
+  ${dryrun} mkdir -p "${src_dir}"
 
-  ${dryrun} tar -xf "${archive}" -C "${build_dir}"
+  ${dryrun} tar -xf "${archive}" -C "${src_dir}"
 }
 
 # Make necessary fixes to build an "old" release on a "modern" system.
@@ -149,7 +149,7 @@ function extract_gdb() {
 # $1: version number
 function fixup_gdb() {
   local version="$1"
-  local build="${build_dir}/gdb-${version}"
+  local build="${src_dir}/gdb-${version}"
 
   echo_header "Fixing up gdb ${version}"
 
@@ -180,12 +180,14 @@ function fixup_gdb() {
 function configure_gdb() {
   local version="$1"
 
+  local src="${src_dir}/gdb-${version}"
   local build="${build_dir}/gdb-${version}"
   local cflags="-Wno-error -g3 -O0"
   local cxxflags="-Wno-error -g3 -O0"
 
-  echo_header "Configuring in ${build}"
+  echo_header "Configuring ${src} in ${build}"
 
+  ${dryrun} mkdir -p "${build}"
   ${dryrun} pushd "${build}"
 
   case "${version}" in
@@ -199,7 +201,7 @@ function configure_gdb() {
   cxxflags="${cxxflags} ${CXXFLAGS:-}"
 
   # Need to use eval to allow the ${dryrun} trick to work with the env var command at the start.
-  eval ${dryrun} 'CFLAGS="${cflags}" CXXFLAGS="${cxxflags}" ./configure --prefix="${install_dir}/gdb-${version}" --enable-werror=no'
+  eval ${dryrun} 'CFLAGS="${cflags}" CXXFLAGS="${cxxflags}" ${src}/configure --prefix="${install_dir}/gdb-${version}" --enable-werror=no'
 
   ${dryrun} popd
 }
@@ -307,6 +309,9 @@ abs_base_dir=$(readlink -f "${base_dir}")
 download_dir="${base_dir}/download"
 
 # Where we extract the tarballs and build
+src_dir="${base_dir}/src"
+
+# Where we build
 build_dir="${base_dir}/build"
 
 # Where we make install to
