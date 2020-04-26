@@ -7,7 +7,7 @@ and built using the following scripts.
 build-images.sh
 ===============
 
-Builds the images locally. A download of [Xcode_9.4.1.xip](https://download.developer.apple.com/Developer_Tools/Xcode_9.4.1/Xcode_9.4.1.xip) is needed to do a complete build. To save on rebuild times, the xip can be removed from the directory to use the cached cdt-infra-build-macos-sdk image.
+Builds the images locally. A download of [Xcode_9.4.1.xip](https://download.developer.apple.com/Developer_Tools/Xcode_9.4.1/Xcode_9.4.1.xip) (visit [here](https://developer.apple.com/download/more/) first to logon to Apple if needed) is needed to do a complete build. To save on rebuild times, the xip can be removed from the directory to use the cached cdt-infra-build-macos-sdk image.
 
 deploy-images.sh
 ================
