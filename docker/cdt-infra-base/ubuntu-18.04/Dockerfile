@@ -75,7 +75,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV JAVA8_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
 # The version of git in Ubuntu 18.04 causes problems, so use newer git. See Bug 548519
 RUN echo "deb http://ppa.launchpad.net/git-core/ppa/ubuntu bionic main" > /etc/apt/sources.list.d/git-core-ubuntu-ppa-bionic.list

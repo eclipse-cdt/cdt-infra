@@ -40,18 +40,17 @@ COPY --from=cdt-infra-all-gdbs:ubuntu-18.04 /shared/common/gdb/gdb-all /shared/c
 ENV PATH="/shared/common/gdb/gdb-all/bin:${PATH}"
 
 # Get header files for win32 & mac for cross compiling JNI libraries on Java 8
-ENV JDK8_VERSION=jdk8u252-b09.1
-ENV JDK8_VERSION_DIR=jdk8u252-b09
+ENV JDK8_VERSION=jdk8u252-b09
 RUN mkdir /tmp/x \
-    && curl -sL https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/${JDK8_VERSION}/OpenJDK8U-jdk_x64_windows_hotspot_8u252b09.zip > /tmp/x/openjdk-win32.zip \
-    && curl -sL https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/${JDK8_VERSION}/OpenJDK8U-jdk_x64_mac_hotspot_8u252b09.tar.gz > /tmp/x/openjdk-mac.zip \
+    && curl -sL https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u252-b09.1/OpenJDK8U-jdk_x64_windows_hotspot_8u252b09.zip > /tmp/x/openjdk-win32.zip \
+    && curl -sL https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u252-b09.1/OpenJDK8U-jdk_x64_mac_hotspot_8u252b09.tar.gz > /tmp/x/openjdk-mac.zip \
     && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
     && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.zip \
-    && cd $JAVA_HOME/include && for i in *.h; do diff $i /tmp/x/win32/${JDK8_VERSION_DIR}/include/$i ; done \
-    && cd $JAVA_HOME/include && for i in *.h; do diff $i /tmp/x/mac/${JDK8_VERSION_DIR}/Contents/Home/include/$i ; done \
-    && mv /tmp/x/win32/${JDK8_VERSION_DIR}/include/win32 $JAVA_HOME/include \
-    && mv /tmp/x/mac/${JDK8_VERSION_DIR}/Contents/Home/include/darwin $JAVA_HOME/include \
-    && find $JAVA_HOME/include \
+    && cd $JAVA8_HOME/include && for i in *.h; do diff $i /tmp/x/win32/${JDK8_VERSION}/include/$i ; done \
+    && cd $JAVA8_HOME/include && for i in *.h; do diff $i /tmp/x/mac/${JDK8_VERSION}/Contents/Home/include/$i ; done \
+    && mv /tmp/x/win32/${JDK8_VERSION}/include/win32 $JAVA8_HOME/include \
+    && mv /tmp/x/mac/${JDK8_VERSION}/Contents/Home/include/darwin $JAVA8_HOME/include \
+    && find $JAVA8_HOME/include \
     && rm -rf /tmp/x
 
 # Get pre-built MacOSX toolchain from other image (this also 
