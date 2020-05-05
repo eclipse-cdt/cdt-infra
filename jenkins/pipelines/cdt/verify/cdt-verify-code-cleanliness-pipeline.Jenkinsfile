@@ -16,7 +16,25 @@ pipeline {
         }
       }
     }
-    stage('Code Formatting Checks') {
+    stage('Code Formatting Checks for CDT version < 10.0') {
+      // CDT version < 10 uses Java 8
+      when {
+        expression { env.GERRIT_BRANCH != 'master' }
+      }
+      steps {
+        container('platform-sdk') {
+          timeout(activity: true, time: 20) {
+            sh 'JAVA_HOME=$JAVA8_HOME PATH=$JAVA_HOME/bin:$PATH \
+                MVN="/usr/share/maven/bin/mvn -Dmaven.repo.local=/home/jenkins/.m2/repository \
+                      --settings /home/jenkins/.m2/settings.xml" ./releng/scripts/check_code_cleanliness.sh'
+          }
+        }
+      }
+    }
+    stage('Code Formatting Checks for CDT version >= 10.0') {
+      when {
+        expression { env.GERRIT_BRANCH == 'master' }
+      }
       steps {
         container('platform-sdk') {
           timeout(activity: true, time: 20) {

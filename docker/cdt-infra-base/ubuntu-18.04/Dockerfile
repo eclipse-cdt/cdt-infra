@@ -60,6 +60,7 @@ RUN chmod 755 ${HOME}/.vnc/xstartup*.sh
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
       openjdk-8-jdk \
+      openjdk-11-jdk \
       curl \
       openssh-client \
       wget \
@@ -76,6 +77,10 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 ENV JAVA8_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV JAVA11_HOME /usr/lib/jvm/java-11-openjdk-amd64
+# Default to JAVA11 being in use
+RUN update-java-alternatives -s java-1.11.0-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
 # The version of git in Ubuntu 18.04 causes problems, so use newer git. See Bug 548519
 RUN echo "deb http://ppa.launchpad.net/git-core/ppa/ubuntu bionic main" > /etc/apt/sources.list.d/git-core-ubuntu-ppa-bionic.list

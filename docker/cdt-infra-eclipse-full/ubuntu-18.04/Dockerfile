@@ -53,6 +53,20 @@ RUN mkdir /tmp/x \
     && find $JAVA8_HOME/include \
     && rm -rf /tmp/x
 
+# Get header files for win32 & mac for cross compiling JNI libraries on Java 11
+ENV JDK11_VERSION=jdk-11.0.7+10
+RUN mkdir /tmp/x \
+    && curl -sL https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.7%2B10.2/OpenJDK11U-jdk_x64_windows_hotspot_11.0.7_10.zip > /tmp/x/openjdk-win32.zip \
+    && curl -sL https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.7%2B10/OpenJDK11U-jdk_x64_mac_hotspot_11.0.7_10.tar.gz > /tmp/x/openjdk-mac.zip \
+    && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
+    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.zip \
+    && cd $JAVA11_HOME/include && for i in *.h; do diff $i /tmp/x/win32/${JDK11_VERSION}/include/$i ; done \
+    && cd $JAVA11_HOME/include && for i in *.h; do diff $i /tmp/x/mac/${JDK11_VERSION}/Contents/Home/include/$i ; done \
+    && mv /tmp/x/win32/${JDK11_VERSION}/include/win32 $JAVA11_HOME/include \
+    && mv /tmp/x/mac/${JDK11_VERSION}/Contents/Home/include/darwin $JAVA11_HOME/include \
+    && find $JAVA11_HOME/include \
+    && rm -rf /tmp/x
+
 # Get pre-built MacOSX toolchain from other image (this also 
 # requires clang to be listed in the installs above)
 COPY --from=cdt-infra-build-macos-sdk:ubuntu-18.04 /opt/osxcross/target /opt/osxcross/target
