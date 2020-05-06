@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 
 RUN apt-get update
 RUN apt-get install -y clang make build-essential
-RUN apt-get install -y libssl-dev lzma-dev liblzma-dev libxml2-dev git cmake patch python cpio bzip2 xz-utils
+RUN apt-get install -y libssl-dev lzma-dev liblzma-dev libxml2-dev git cmake patch python cpio bzip2 xz-utils libbz2-dev
 
 # Xcode_9.4.1.xip needs to be downloaded from 
 # https://download.developer.apple.com/Developer_Tools/Xcode_9.4.1/Xcode_9.4.1.xip

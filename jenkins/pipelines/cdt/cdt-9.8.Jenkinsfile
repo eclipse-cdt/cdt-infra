@@ -21,7 +21,7 @@ pipeline {
         container('cdt') {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
-                sh "/usr/share/maven/bin/mvn \
+                sh 'JAVA_HOME=$JAVA8_HOME PATH=$JAVA_HOME/bin:$PATH /usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -P build-standalone-debugger-rcp \
                       -P baseline-compare-and-replace \
@@ -30,7 +30,7 @@ pipeline {
                       -P production \
                       -Dmaven.repo.local=/home/jenkins/.m2/repository \
                       --settings /home/jenkins/.m2/settings.xml \
-                      "
+                      '
             }
           }
         }
