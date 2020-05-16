@@ -7,6 +7,7 @@ pipeline {
   options {
     timestamps()
     disableConcurrentBuilds()
+    skipDefaultCheckout() // Since Git Clone exists as a stage, no benefit from a default checkout
   }
   stages {
     stage('Process info') {
@@ -24,7 +25,8 @@ pipeline {
     stage('Git Clone') {
       steps {
         container('cdt') {
-          checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: 20], [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: false, timeout: 20]], submoduleCfg: [], userRemoteConfigs: [[url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
+          deleteDir() // Assure a clean workspace to start the fetch
+          checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [[$class: 'CloneOption', noTags: true, timeout: 20]], userRemoteConfigs: [[url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
         }
       }
     }
