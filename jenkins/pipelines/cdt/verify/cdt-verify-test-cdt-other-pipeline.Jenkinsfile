@@ -11,7 +11,12 @@ pipeline {
     stage('Git Clone') {
       steps {
         container('cdt') {
-          checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']], [$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: true]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
+          timeout(activity: true, time: 20) {
+            sh 'git version'
+            sh 'git config remote.origin.url https://git.eclipse.org/r/cdt/org.eclipse.cdt.git'
+            sh 'git fetch --no-tags --force -- https://git.eclipse.org/r/cdt/org.eclipse.cdt.git $GERRIT_REFSPEC'
+            sh 'git checkout --force FETCH_HEAD'
+          }
         }
       }
     }
