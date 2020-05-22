@@ -35,7 +35,6 @@ pipeline {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
-                      -P build-standalone-debugger-rcp \
                       -P baseline-compare-and-replace \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
                       -Dindexer.timeout=300 \
