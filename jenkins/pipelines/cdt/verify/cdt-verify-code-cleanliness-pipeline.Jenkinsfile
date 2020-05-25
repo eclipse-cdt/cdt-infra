@@ -28,7 +28,7 @@ pipeline {
       }
       steps {
         container('platform-sdk') {
-          timeout(activity: true, time: 20) {
+          timeout(activity: true, time: 30) {
             sh 'JAVA_HOME=$JAVA8_HOME PATH=$JAVA_HOME/bin:$PATH \
                 MVN="/usr/share/maven/bin/mvn -Dmaven.repo.local=/home/jenkins/.m2/repository \
                       --settings /home/jenkins/.m2/settings.xml" ./releng/scripts/check_code_cleanliness.sh'
@@ -42,7 +42,7 @@ pipeline {
       }
       steps {
         container('platform-sdk') {
-          timeout(activity: true, time: 20) {
+          timeout(activity: true, time: 30) {
             sh 'MVN="/usr/share/maven/bin/mvn -Dmaven.repo.local=/home/jenkins/.m2/repository \
                       --settings /home/jenkins/.m2/settings.xml" ./releng/scripts/check_code_cleanliness.sh'
           }
