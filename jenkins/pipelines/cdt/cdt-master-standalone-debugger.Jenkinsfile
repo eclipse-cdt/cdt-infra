@@ -23,6 +23,7 @@ pipeline {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
+                      -Dmaven.test.failure.ignore=true \
                       -P build-standalone-debugger-rcp \
                       -P baseline-compare-and-replace \
                       -DuseSimrelRepo \
