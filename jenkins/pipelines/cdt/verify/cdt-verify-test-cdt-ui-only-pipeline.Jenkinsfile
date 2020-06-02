@@ -27,6 +27,7 @@ pipeline {
             withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
+                      -Dmaven.test.failure.ignore=true \
                       -P skip-tests-except-cdt-ui \
                       -DskipDoc=true \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
