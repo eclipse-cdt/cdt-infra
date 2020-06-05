@@ -14,7 +14,7 @@ pipeline {
             }
           }
           steps {
-            container('platform-sdk') {
+            container('cdt') {
               timeout(20) {
                 checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
                 sh './releng/scripts/check_code_cleanliness.sh'
