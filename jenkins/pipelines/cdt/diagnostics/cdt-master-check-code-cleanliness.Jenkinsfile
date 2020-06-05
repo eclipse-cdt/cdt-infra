@@ -12,6 +12,11 @@ pipeline {
     stage('Git Clone') {
       steps {
         container('cdt') {
+          timeout(activity: true, time: 20) {
+            /* Running the git fetch command manually is a workaround. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=560283#c16  */
+            sh 'git config remote.origin.url https://git.eclipse.org/r/cdt/org.eclipse.cdt.git'
+            sh 'git fetch --no-tags --force --progress -- https://git.eclipse.org/r/cdt/org.eclipse.cdt.git +refs/heads/*:refs/remotes/origin/*'
+          }
           git branch: 'master', url: 'https://git.eclipse.org/r/cdt/org.eclipse.cdt.git'
         }
       }
