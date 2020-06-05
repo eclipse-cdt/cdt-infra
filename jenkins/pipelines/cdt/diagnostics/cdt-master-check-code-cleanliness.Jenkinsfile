@@ -12,7 +12,7 @@ pipeline {
     stage('Git Clone') {
       steps {
         container('cdt') {
-          git branch: 'master', url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git'
+          git branch: 'master', url: 'https://git.eclipse.org/r/cdt/org.eclipse.cdt.git'
         }
       }
     }

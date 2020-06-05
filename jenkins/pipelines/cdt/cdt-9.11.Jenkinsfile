@@ -24,7 +24,7 @@ pipeline {
     stage('Git Clone') {
       steps {
         container('cdt') {
-          checkout([$class: 'GitSCM', branches: [[name: '*/cdt_9_11']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: 20], [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: false, timeout: 20]], submoduleCfg: [], userRemoteConfigs: [[url: 'git://git.eclipse.org/gitroot/cdt/org.eclipse.cdt.git']]])
+          checkout([$class: 'GitSCM', branches: [[name: '*/cdt_9_11']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: 20], [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: false, timeout: 20]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://git.eclipse.org/r/cdt/org.eclipse.cdt.git']]])
         }
       }
     }
