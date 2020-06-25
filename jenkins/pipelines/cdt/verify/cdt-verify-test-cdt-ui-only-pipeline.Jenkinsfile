@@ -28,6 +28,7 @@ pipeline {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Dmaven.test.failure.ignore=true \
+                      -P build-standalone-debugger-rcp \
                       -P skip-tests-except-cdt-ui \
                       -DskipDoc=true \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
