@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       zlib1g-dev \
       gdbserver \
       gcc-mingw-w64-x86-64 \
+      g++-mingw-w64-x86-64 \
       clang \
       libxml2-utils \
       gettext-base \
