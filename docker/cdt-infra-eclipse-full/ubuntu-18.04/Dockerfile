@@ -44,9 +44,9 @@ ENV PATH="/shared/common/gdb/gdb-all/bin:${PATH}"
 ENV JDK8_VERSION=jdk8u252-b09
 RUN mkdir /tmp/x \
     && curl -sL https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u252-b09.1/OpenJDK8U-jdk_x64_windows_hotspot_8u252b09.zip > /tmp/x/openjdk-win32.zip \
-    && curl -sL https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u252-b09.1/OpenJDK8U-jdk_x64_mac_hotspot_8u252b09.tar.gz > /tmp/x/openjdk-mac.zip \
+    && curl -sL https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u252-b09.1/OpenJDK8U-jdk_x64_mac_hotspot_8u252b09.tar.gz > /tmp/x/openjdk-mac.tar.gz \
     && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
-    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.zip \
+    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
     && cd $JAVA8_HOME/include && for i in *.h; do diff $i /tmp/x/win32/${JDK8_VERSION}/include/$i ; done \
     && cd $JAVA8_HOME/include && for i in *.h; do diff $i /tmp/x/mac/${JDK8_VERSION}/Contents/Home/include/$i ; done \
     && mv /tmp/x/win32/${JDK8_VERSION}/include/win32 $JAVA8_HOME/include \
@@ -58,9 +58,9 @@ RUN mkdir /tmp/x \
 ENV JDK11_VERSION=jdk-11.0.7+10
 RUN mkdir /tmp/x \
     && curl -sL https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.7%2B10.2/OpenJDK11U-jdk_x64_windows_hotspot_11.0.7_10.zip > /tmp/x/openjdk-win32.zip \
-    && curl -sL https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.7%2B10/OpenJDK11U-jdk_x64_mac_hotspot_11.0.7_10.tar.gz > /tmp/x/openjdk-mac.zip \
+    && curl -sL https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.7%2B10/OpenJDK11U-jdk_x64_mac_hotspot_11.0.7_10.tar.gz > /tmp/x/openjdk-mac.tar.gz \
     && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
-    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.zip \
+    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
     && cd $JAVA11_HOME/include && for i in *.h; do diff $i /tmp/x/win32/${JDK11_VERSION}/include/$i ; done \
     && cd $JAVA11_HOME/include && for i in *.h; do diff $i /tmp/x/mac/${JDK11_VERSION}/Contents/Home/include/$i ; done \
     && mv /tmp/x/win32/${JDK11_VERSION}/include/win32 $JAVA11_HOME/include \
