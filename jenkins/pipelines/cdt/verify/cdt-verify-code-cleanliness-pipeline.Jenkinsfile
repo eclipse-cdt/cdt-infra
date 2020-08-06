@@ -53,7 +53,7 @@ pipeline {
   post {
     always {
       container('cdt') {
-        archiveArtifacts allowEmptyArchive: true, artifacts: '*.log,native/org.eclipse.cdt.native.serial/**,core/org.eclipse.cdt.core.native'
+        archiveArtifacts allowEmptyArchive: true, artifacts: '*.log,native/org.eclipse.cdt.native.serial/**,core/org.eclipse.cdt.core.native/**,core/org.eclipse.cdt.core.linux.x86_64/**'
       }
     }
   }
