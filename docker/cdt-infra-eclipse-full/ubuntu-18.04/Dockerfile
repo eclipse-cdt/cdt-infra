@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       g++-mingw-w64-x86-64 \
       gcc-aarch64-linux-gnu \
       g++-aarch64-linux-gnu \
+      gcc-powerpc-linux-gnu \
+      g++-powerpc-linux-gnu \
       clang \
       libxml2-utils \
       gettext-base \
