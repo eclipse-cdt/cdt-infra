@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install meson
 
 #Node
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*  \
     && npm install -g yarn
@@ -72,7 +72,7 @@ RUN mkdir /tmp/x \
     && find $JAVA11_HOME/include \
     && rm -rf /tmp/x
 
-# Get pre-built MacOSX toolchain from other image (this also 
+# Get pre-built MacOSX toolchain from other image (this also
 # requires clang to be listed in the installs above)
 COPY --from=cdt-infra-build-macos-sdk:ubuntu-18.04 /opt/osxcross/target /opt/osxcross/target
 ENV PATH="/opt/osxcross/target/bin:${PATH}"
