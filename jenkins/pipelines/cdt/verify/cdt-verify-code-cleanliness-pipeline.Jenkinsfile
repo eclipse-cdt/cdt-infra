@@ -24,7 +24,7 @@ pipeline {
     stage('Code Formatting Checks for CDT version < 10.0') {
       // CDT version < 10 uses Java 8
       when {
-        expression { env.GERRIT_BRANCH ==~ /cdt_9/ }
+        expression { env.GERRIT_BRANCH ==~ /cdt_9.*/ }
       }
       steps {
         container('cdt') {
@@ -38,7 +38,7 @@ pipeline {
     }
     stage('Code Formatting Checks for CDT version >= 10.0') {
       when {
-        expression { env.GERRIT_BRANCH ==~ /(master|cdt_10)/ }
+        expression { env.GERRIT_BRANCH ==~ /(master|cdt_10.*)/ }
       }
       steps {
         container('cdt') {
