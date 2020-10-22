@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      yamlFile 'jenkins/pod-templates/cdt-platform-sdk.yaml'
+      yamlFile 'jenkins/pod-templates/cdt-full-pod-plus-eclipse-install.yaml'
     }
   }
   options {
