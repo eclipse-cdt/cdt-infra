@@ -2,7 +2,9 @@ Dockerfiles
 ============
 
 The docker images for Eclipse CDT's [Jenkins instance](https://ci.eclipse.org/cdt/) are stored at [quay.io](https://quay.io/organization/eclipse-cdt)
-and built using the following scripts.
+and built using the following scripts. The individual directories below this one contain Dockerfiles which contain a little more information. Note that
+the split between the Dockerfiles is somewhat arbitrary and historical. Only the cdt-infra-eclipse-full image is known to be referenced outside
+of the cdt-infra repo.
 
 build-images.sh
 ===============
