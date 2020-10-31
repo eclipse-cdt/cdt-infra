@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 ENV HOME=/home/vnc
 RUN apt-get update
-RUN apt-get install -y curl tar gzip
+RUN apt-get install -y curl tar gzip clang-format
 #Eclipse SDK & Fix permissions for OpenShift & standard k8s
 RUN mkdir -p ${HOME}/buildtools && cd ${HOME}/buildtools \
   && curl -sL https://download.eclipse.org/eclipse/downloads/drops4/R-4.13-201909161045/eclipse-SDK-4.13-linux-gtk-x86_64.tar.gz | tar xvz \
