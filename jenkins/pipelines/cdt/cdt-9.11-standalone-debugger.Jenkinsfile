@@ -15,6 +15,8 @@ pipeline {
           timeout(activity: true, time: 20) {
             /* Running the git fetch command manually is a workaround. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=560283#c16  */
             sh 'git config remote.origin.url https://git.eclipse.org/r/cdt/org.eclipse.cdt.git'
+            /* Workaround for Bug 568904 */
+            sh 'git config protocol.version 1'
             sh 'git fetch --no-tags --force --progress -- https://git.eclipse.org/r/cdt/org.eclipse.cdt.git +refs/heads/*:refs/remotes/origin/*'
           }
           checkout([$class: 'GitSCM', branches: [[name: '*/cdt_9_11']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption', timeout: 20], [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: false]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://git.eclipse.org/r/cdt/org.eclipse.cdt.git']]])
