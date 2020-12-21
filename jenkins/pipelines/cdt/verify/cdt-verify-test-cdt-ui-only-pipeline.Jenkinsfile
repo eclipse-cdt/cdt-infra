@@ -48,7 +48,7 @@ pipeline {
     always {
       container('cdt') {
         junit '*/*/target/surefire-reports/*.xml'
-        archiveArtifacts '**/screenshots/*.jpeg,**/target/**/*.log'
+        archiveArtifacts '*/*/target/surefire-reports/**,**/screenshots/*.jpeg,**/target/**/*.log'
       }
     }
   }
