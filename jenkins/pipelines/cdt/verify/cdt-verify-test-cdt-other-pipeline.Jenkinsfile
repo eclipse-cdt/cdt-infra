@@ -30,6 +30,7 @@ pipeline {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Dmaven.test.failure.ignore=true \
+                      -DexcludedGroups=flakyTest,slowTest \
                       -P skip-tests-except-cdt-other \
                       -DskipDoc=true \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \

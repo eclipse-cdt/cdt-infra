@@ -30,6 +30,7 @@ pipeline {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Dmaven.test.failure.ignore=true \
+                      -DexcludedGroups=flakyTest,slowTest \
                       -P build-standalone-debugger-rcp \
                       -P skip-tests-except-cdt-ui \
                       -DskipDoc=true \
