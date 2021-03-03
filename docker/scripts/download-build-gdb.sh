@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# * Copyright (c) 2015 Ericsson and others.
+# * Copyright (c) 2015, 2021 Ericsson and others.
 # * This program and the accompanying materials
 # * are made available under the terms of the Eclipse Public License 2.0
 # * which accompanies this distribution, and is available at
@@ -32,7 +32,8 @@ default_jlevel="4"
 jlevel="${default_jlevel}"
 
 # Supported versions
-default_versions="9.1 8.3.1 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1 7.4.1 7.3.1 7.2 7.1 7.0.1 6.8 6.7.1 6.6"
+# Note starting in GDB 9.x the .x is the patch release, so for example we have 9.2 in this list, but not 9.1.
+default_versions="10.1 9.2 8.3.1 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1 7.4.1 7.3.1 7.2 7.1 7.0.1 6.8 6.7.1 6.6"
 
 # Is set to "echo" if we are doing a dry-run.
 dryrun=""
@@ -155,15 +156,146 @@ function fixup_gdb() {
 
   case "$version" in
     # glibc or the kernel changed the signal API at some point
-    "6.6"|"6.7.1"|"6.8"|"7.0.1"|"7.1"|"7.2"|"7.3.1"|"7.4.1")
+    "7.4.1"|"7.3.1"|"7.2"|"7.1"|"7.0.1"|"6.8"|"6.7.1"|"6.6")
       ${dryrun} find "${build}/gdb" -type f -exec sed -i -e 's/struct siginfo;/#include <signal.h>/g' {} \;
       ${dryrun} find "${build}/gdb" -type f -exec sed -i -e 's/struct siginfo/siginfo_t/g' {} \;
       ;;
+  esac
 
+  case "$version" in
+    # paddr_t was a typo a long time ago that slowly got fixed/removed from sources/headers
+    "6.6")
+      ${dryrun} find "${build}/gdb" -type f -exec sed -i -e 's/paddr_t/psaddr_t/g' {} \;
+      ;;
+  esac
+
+  case "$version" in
     # glibc or the kernel changed the proc-service API at some point (original GDB fix: https://sourceware.org/ml/gdb-patches/2015-02/msg00210.html)
     "7.9.1"|"7.8.2"|"7.7.1"|"7.6.2"|"7.5.1"|"7.4.1"|"7.3.1"|"7.2"|"7.1"|"7.0.1"|"6.8"|"6.7.1"|"6.6")
       ${dryrun} sed -i -e 's/ps_lgetfpregs (gdb_ps_prochandle_t ph, lwpid_t lwpid, void \*fpregset)/ps_lgetfpregs (gdb_ps_prochandle_t ph, lwpid_t lwpid, prfpregset_t *fpregset)/g' "${build}/gdb/gdbserver/proc-service.c"
       ${dryrun} sed -i -e 's/ps_lsetfpregs (gdb_ps_prochandle_t ph, lwpid_t lwpid, void \*fpregset)/ps_lsetfpregs (gdb_ps_prochandle_t ph, lwpid_t lwpid, const prfpregset_t *fpregset)/g' "${build}/gdb/gdbserver/proc-service.c"
+      ;;
+  esac
+
+    # gdb commit 5a6c3296a7a90694ad4042f6256f3da6d4fa4ee8 - Fix ia64 defining TRAP_HWBKPT before including gdb_wait.h
+  case "$version" in
+    "8.1.1"|"8.0.1")
+      ${dryrun} patch --directory=${build} --strip 1 <<END
+diff --git a/gdb/nat/linux-ptrace.c b/gdb/nat/linux-ptrace.c
+index 5c4ddc95909..1f21ef03a39 100644
+--- a/gdb/nat/linux-ptrace.c
++++ b/gdb/nat/linux-ptrace.c
+@@ -21,8 +21,6 @@
+ #include "linux-procfs.h"
+ #include "linux-waitpid.h"
+ #include "buffer.h"
+-#include "gdb_wait.h"
+-#include "gdb_ptrace.h"
+ #ifdef HAVE_SYS_PROCFS_H
+ #include <sys/procfs.h>
+ #endif
+diff --git a/gdb/nat/linux-ptrace.h b/gdb/nat/linux-ptrace.h
+index 60967a3b6aa..dc180fbf82a 100644
+--- a/gdb/nat/linux-ptrace.h
++++ b/gdb/nat/linux-ptrace.h
+@@ -21,6 +21,7 @@
+ struct buffer;
+ 
+ #include "nat/gdb_ptrace.h"
++#include "gdb_wait.h"
+ 
+ #ifdef __UCLIBC__
+ #if !(defined(__UCLIBC_HAS_MMU__) || defined(__ARCH_HAS_MMU__))
+END
+      ;;
+
+    "7.12.1")
+      ${dryrun} patch --directory=${build} --strip 1 <<END
+diff --git a/gdb/nat/linux-ptrace.c b/gdb/nat/linux-ptrace.c
+index 3447e0716c1..dd3310eecbf 100644
+--- a/gdb/nat/linux-ptrace.c
++++ b/gdb/nat/linux-ptrace.c
+@@ -21,8 +21,6 @@
+ #include "linux-procfs.h"
+ #include "linux-waitpid.h"
+ #include "buffer.h"
+-#include "gdb_wait.h"
+-#include "gdb_ptrace.h"
+ #include <sys/procfs.h>
+ 
+ /* Stores the ptrace options supported by the running kernel.
+diff --git a/gdb/nat/linux-ptrace.h b/gdb/nat/linux-ptrace.h
+index 59549452c09..6faa89b22a0 100644
+--- a/gdb/nat/linux-ptrace.h
++++ b/gdb/nat/linux-ptrace.h
+@@ -21,6 +21,7 @@
+ struct buffer;
+ 
+ #include "nat/gdb_ptrace.h"
++#include "gdb_wait.h"
+ 
+ #ifdef __UCLIBC__
+ #if !(defined(__UCLIBC_HAS_MMU__) || defined(__ARCH_HAS_MMU__))
+END
+      ;;
+
+    "7.11.1")
+      ${dryrun} patch --directory=${build} --strip 1 <<END
+diff --git a/gdb/nat/linux-ptrace.c b/gdb/nat/linux-ptrace.c
+index 0eaf9a30ff4..446d5ba94b5 100644
+--- a/gdb/nat/linux-ptrace.c
++++ b/gdb/nat/linux-ptrace.c
+@@ -21,8 +21,6 @@
+ #include "linux-procfs.h"
+ #include "linux-waitpid.h"
+ #include "buffer.h"
+-#include "gdb_wait.h"
+-#include "gdb_ptrace.h"
+ 
+ /* Stores the ptrace options supported by the running kernel.
+    A value of -1 means we did not check for features yet.  A value
+diff --git a/gdb/nat/linux-ptrace.h b/gdb/nat/linux-ptrace.h
+index 0a23bcb0fc4..d84114b4881 100644
+--- a/gdb/nat/linux-ptrace.h
++++ b/gdb/nat/linux-ptrace.h
+@@ -21,6 +21,7 @@
+ struct buffer;
+ 
+ #include "nat/gdb_ptrace.h"
++#include "gdb_wait.h"
+ 
+ #ifdef __UCLIBC__
+ #if !(defined(__UCLIBC_HAS_MMU__) || defined(__ARCH_HAS_MMU__))
+END
+      ;;
+
+    "7.10.1")
+      ${dryrun} patch --directory=${build} --strip 1 <<END
+diff --git a/gdb/nat/linux-ptrace.c b/gdb/nat/linux-ptrace.c
+index 1a926f93156..43d5fbfc731 100644
+--- a/gdb/nat/linux-ptrace.c
++++ b/gdb/nat/linux-ptrace.c
+@@ -21,7 +21,6 @@
+ #include "linux-procfs.h"
+ #include "linux-waitpid.h"
+ #include "buffer.h"
+-#include "gdb_wait.h"
+ 
+ /* Stores the ptrace options supported by the running kernel.
+    A value of -1 means we did not check for features yet.  A value
+diff --git a/gdb/nat/linux-ptrace.h b/gdb/nat/linux-ptrace.h
+index be6c39528c9..681b1663f62 100644
+--- a/gdb/nat/linux-ptrace.h
++++ b/gdb/nat/linux-ptrace.h
+@@ -21,6 +21,7 @@
+ struct buffer;
+ 
+ #include <sys/ptrace.h>
++#include "gdb_wait.h"
+ 
+ #ifdef __UCLIBC__
+ #if !(defined(__UCLIBC_HAS_MMU__) || defined(__ARCH_HAS_MMU__))
+END
       ;;
   esac
 
@@ -231,18 +363,32 @@ function make_gdb() {
 function make_install_gdb() {
   local version="$1"
 
-  # Only install gdb, not the whole binutils-gdb
-  local install="${build_dir}/gdb-${version}/gdb"
+  # Only install gdb and gdbserver (if present for GDB 10.1+), not the whole binutils-gdb
+  local install_gdb="${build_dir}/gdb-${version}/gdb"
+  local install_gdbserver="${build_dir}/gdb-${version}/gdbserver"
 
-  echo_header "Make installing in ${install}"
+  echo_header "Make installing in ${install_gdb}"
 
-  ${dryrun} pushd "${install}"
+  ${dryrun} pushd "${install_gdb}"
 
   # Disable building of the doc, which fails anyway with older gdbs and
   # newer makeinfos.
   ${dryrun} make install MAKEINFO=true
 
   ${dryrun} popd
+
+  # XX this does not dryrun properly as the directory won't exist until it is built
+  if [ -e ${install_gdbserver} ]; then
+    echo_header "Make installing in ${install_gdbserver}"
+
+    ${dryrun} pushd "${install_gdb}"
+
+    # Disable building of the doc, which fails anyway with older gdbs and
+    # newer makeinfos.
+    ${dryrun} make install MAKEINFO=true
+
+    ${dryrun} popd
+  fi
 }
 
 

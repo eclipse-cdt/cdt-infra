@@ -34,7 +34,7 @@ ENV LC_ALL en_US.UTF-8
 # Build GDB
 COPY scripts/download-build-gdb.sh /opt/scripts/download-build-gdb.sh
 ENV GDB_BASE /shared/common/gdb/gdb-all
-ENV GDB_VERSIONS 9.1 8.3.1 8.2.1 8.1.1 8.0.1 7.12.1 7.11.1 7.10.1 7.9.1 7.8.2 7.7.1 7.6.2 7.5.1
+ENV GDB_VERSIONS all
 # build without debug info to reduce size
 ENV CFLAGS -g0
 ENV CXXFLAGS -g0
