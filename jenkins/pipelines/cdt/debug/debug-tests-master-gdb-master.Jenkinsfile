@@ -32,9 +32,10 @@ pipeline {
             sh """
                 mkdir gdb-build
                 cd gdb-build
-                ../binutils-gdb/configure
+                ${WORKSPACE}/binutils-gdb/configure --prefix=${WORKSPACE}/gdb-install
                 make -j1 V=1
-                cp gdb/gdb gdb/gdb.10.0
+                make -C gdb install MAKEINFO=true
+                make -C gdbserver install MAKEINFO=true
                """
           }
         }
@@ -48,8 +49,8 @@ pipeline {
                 sh "cd ${WORKSPACE}/eclipse-cdt && /usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Pskip-tests-except-dsf-gdb \
-                      -Dcdt.tests.dsf.gdb.versions=gdb.10.0 \
-                      -Ddsf.gdb.tests.gdbPath=${WORKSPACE}/gdb-build/gdb \
+                      -Dcdt.tests.dsf.gdb.versions=gdb,gdbserver \
+                      -Ddsf.gdb.tests.gdbPath=${WORKSPACE}/gdb-install \
                       -DskipDoc=true \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
                       -Dindexer.timeout=300 \
