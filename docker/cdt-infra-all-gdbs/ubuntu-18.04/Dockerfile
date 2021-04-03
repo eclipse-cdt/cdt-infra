@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       build-essential \
       bison \
       flex \
+      libgmp-dev \
       libexpat1-dev \
       libmpfr-dev \
       libncurses-dev \
