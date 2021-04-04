@@ -411,6 +411,14 @@ function symlink_gdb() {
     ${dryrun} ln -sf "${install_dir}/gdb-${version}/bin/gdb" "${symlinks_dir}/gdb.${short_version}"
     ${dryrun} ln -sf "${install_dir}/gdb-${version}/bin/gdbserver" "${symlinks_dir}/gdbserver.${short_version}"
   fi
+
+  # If the version is > 9.x, then make a symlink based on GDB new numbering scheme which is MAJOR.PATCH
+  local maybe_major_version="${version%.[0-9]}"
+  local major_version="${maybe_major_version%.[0-9]}"
+  if (( "$major_version" >= 9 )) ; then
+    ${dryrun} ln -sf "${install_dir}/gdb-${version}/bin/gdb" "${symlinks_dir}/gdb.${major_version}"
+    ${dryrun} ln -sf "${install_dir}/gdb-${version}/bin/gdbserver" "${symlinks_dir}/gdbserver.${major_version}"
+  fi
 }
 
 # Start argument parsing.  The script will exit (thanks to errexit) if bad arguments are passed.
