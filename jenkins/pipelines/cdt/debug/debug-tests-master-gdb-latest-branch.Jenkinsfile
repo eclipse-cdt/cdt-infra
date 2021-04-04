@@ -49,6 +49,7 @@ pipeline {
                 sh "cd ${WORKSPACE}/eclipse-cdt && /usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Pskip-tests-except-dsf-gdb \
+                      -Dmaven.test.failure.ignore=true \
                       -Dcdt.tests.dsf.gdb.versions=gdb,gdbserver \
                       -Ddsf.gdb.tests.gdbPath=${WORKSPACE}/gdb-install/bin \
                       -DskipDoc=true \
