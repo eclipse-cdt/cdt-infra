@@ -381,7 +381,7 @@ function make_install_gdb() {
   if [ -e ${install_gdbserver} ]; then
     echo_header "Make installing in ${install_gdbserver}"
 
-    ${dryrun} pushd "${install_gdb}"
+    ${dryrun} pushd "${install_gdbserver}"
 
     # Disable building of the doc, which fails anyway with older gdbs and
     # newer makeinfos.
