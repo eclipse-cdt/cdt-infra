@@ -21,7 +21,7 @@ pipeline {
       steps {
         container('cdt') {
           // We use "checkout" instead of "git" here so we can specify relativeTargetDir and other options
-          checkout([$class: 'GitSCM', branches: [[name: '*/gdb-9-branch']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: true], [$class: 'RelativeTargetDirectory', relativeTargetDir: 'binutils-gdb']], submoduleCfg: [], userRemoteConfigs: [[refspec: '+refs/heads/gdb-9-branch:refs/remotes/origin/gdb-9-branch', url: 'https://github.com/bminor/binutils-gdb.git']]])
+          checkout([$class: 'GitSCM', branches: [[name: '*/gdb-10-branch']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: true], [$class: 'RelativeTargetDirectory', relativeTargetDir: 'binutils-gdb']], submoduleCfg: [], userRemoteConfigs: [[refspec: '+refs/heads/gdb-10-branch:refs/remotes/origin/gdb-10-branch', url: 'https://github.com/bminor/binutils-gdb.git']]])
         }
       }
     }
@@ -32,9 +32,10 @@ pipeline {
             sh """
                 mkdir gdb-build
                 cd gdb-build
-                ../binutils-gdb/configure
+                ${WORKSPACE}/binutils-gdb/configure --prefix=${WORKSPACE}/gdb-install
                 make -j1 V=1
-                cp gdb/gdb gdb/gdb.9.0
+                make -C gdb install MAKEINFO=true
+                make -C gdbserver install MAKEINFO=true
                """
           }
         }
@@ -48,8 +49,8 @@ pipeline {
                 sh "cd ${WORKSPACE}/eclipse-cdt && /usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Pskip-tests-except-dsf-gdb \
-                      -Dcdt.tests.dsf.gdb.versions=gdb.9.0 \
-                      -Ddsf.gdb.tests.gdbPath=${WORKSPACE}/gdb-build/gdb \
+                      -Dcdt.tests.dsf.gdb.versions=gdb,gdbserver \
+                      -Ddsf.gdb.tests.gdbPath=${WORKSPACE}/gdb-install \
                       -DskipDoc=true \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
                       -Dindexer.timeout=300 \

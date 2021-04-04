@@ -5,6 +5,7 @@ USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
       build-essential \
       gdb \
+      libgmp-dev \
       libexpat1-dev \
       libipt1 \
       libmpfr-dev \

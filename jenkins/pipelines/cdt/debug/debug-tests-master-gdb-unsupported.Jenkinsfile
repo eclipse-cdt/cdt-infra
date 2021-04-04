@@ -24,7 +24,7 @@ pipeline {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Pskip-tests-except-dsf-gdb \
-                      -Dcdt.tests.dsf.gdb.versions=gdbserver.8.3 \
+                      -Dcdt.tests.dsf.gdb.versions=unsupported \
                       -DskipDoc=true \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
                       -Dindexer.timeout=300 \
