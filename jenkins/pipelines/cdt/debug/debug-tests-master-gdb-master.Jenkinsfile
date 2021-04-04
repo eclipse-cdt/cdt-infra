@@ -50,7 +50,7 @@ pipeline {
                       clean verify -B -V \
                       -Pskip-tests-except-dsf-gdb \
                       -Dcdt.tests.dsf.gdb.versions=gdb,gdbserver \
-                      -Ddsf.gdb.tests.gdbPath=${WORKSPACE}/gdb-install \
+                      -Ddsf.gdb.tests.gdbPath=${WORKSPACE}/gdb-install/bin \
                       -DskipDoc=true \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
                       -Dindexer.timeout=300 \
