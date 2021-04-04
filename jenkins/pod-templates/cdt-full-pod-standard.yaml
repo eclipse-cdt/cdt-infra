@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
   - name: cdt
-    image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:6d482e6434c89ab7b7cf62b125cda2f7b5213ec81213f669440a6f774b54f581
+    image: quay.io/eclipse-cdt/cdt-infra-eclipse-full@sha256:2346dd2b113146dab04ec51344e68b15a93352b4e495745ecbd9f061a4bee9b0
     tty: true
     args: ["/bin/sh", "-c", "/home/vnc/.vnc/xstartup.sh && cat"]
     resources:
