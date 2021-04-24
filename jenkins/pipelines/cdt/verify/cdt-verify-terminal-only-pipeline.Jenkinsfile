@@ -48,7 +48,7 @@ pipeline {
   post {
     always {
       container('cdt') {
-        junit '*/*/target/surefire-reports/*.xml'
+        junit '*/*/target/surefire-reports/*.xml,terminal/plugins/org.eclipse.tm.terminal.test/target/surefire-reports/*.xml'
         archiveArtifacts '*/*/target/surefire-reports/**,**/screenshots/*.jpeg,**/target/**/*.log,terminal/repo/target/repository/**'
       }
     }
