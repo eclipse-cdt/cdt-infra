@@ -28,7 +28,7 @@ default_base_dir="$HOME/gdb-all"
 base_dir="${default_base_dir}"
 
 # Passed to make's -j
-default_jlevel="4"
+default_jlevel="12"
 jlevel="${default_jlevel}"
 
 # Supported versions
