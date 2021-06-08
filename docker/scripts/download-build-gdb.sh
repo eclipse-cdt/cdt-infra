@@ -109,7 +109,7 @@ function check_supported() {
 #
 # $1: version number
 function download_gdb() {
-  local baseaddr="http://ftp.gnu.org/gnu/gdb"
+  local baseaddr="https://ftp.gnu.org/gnu/gdb"
   local version="$1"
 
   case "$version" in

@@ -20,7 +20,7 @@ source code repository logs.
 
 This program and the accompanying materials are made available under the terms
 of the Eclipse Public License v. 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
+https://www.eclipse.org/legal/epl-2.0.
 
 SPDX-License-Identifier: EPL-2.0
 
@@ -51,7 +51,7 @@ antlr (4.5.1)
 * License: New BSD license
 * Project: antlr.org
 * Source:
-   http://search.maven.org/remotecontent?filepath=org/antlr/antlr4-runtime/4.5.1-1/antlr4-runtime-4.5.1-1-sources.jar
+   https://search.maven.org/remotecontent?filepath=org/antlr/antlr4-runtime/4.5.1-1/antlr4-runtime-4.5.1-1-sources.jar
 
 Apache Commons Compress (1.6)
 
@@ -64,9 +64,9 @@ Apache Commons Lang (3.1.0)
 freemarker (2.3.22)
 
 * License: Apache License, 2.0
-* Project: http://freemarker.org/
+* Project: https://freemarker.org/
 * Source:
-   http://search.maven.org/remotecontent?filepath=org/freemarker/freemarker/2.3.22/freemarker-2.3.22-sources.jar
+   https://search.maven.org/remotecontent?filepath=org/freemarker/freemarker/2.3.22/freemarker-2.3.22-sources.jar
 
 Google Gson (2.2.4)
 
