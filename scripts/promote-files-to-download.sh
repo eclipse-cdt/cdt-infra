@@ -18,6 +18,7 @@ fi
 
 # Rather than putting in infra/coding to make this a fully generic script with parameters,
 # just list out what needs to be copied where
+$ECHO $SCP ./download/releases/latest/* "${SSHUSER}:${DOWNLOAD}/releases/latest/"
 $ECHO $SCP ./download/releases/9.7/* "${SSHUSER}:${DOWNLOAD}/releases/9.7/"
 $ECHO $SCP ./download/releases/9.8/* "${SSHUSER}:${DOWNLOAD}/releases/9.8/"
 $ECHO $SCP ./download/releases/9.9/* "${SSHUSER}:${DOWNLOAD}/releases/9.9/"
