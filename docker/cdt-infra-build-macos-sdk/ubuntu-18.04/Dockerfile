@@ -5,9 +5,9 @@ RUN apt-get update
 RUN apt-get install -y clang make build-essential
 RUN apt-get install -y libssl-dev lzma-dev liblzma-dev libxml2-dev git cmake patch python cpio bzip2 xz-utils libbz2-dev
 
-# Xcode_9.4.1.xip needs to be downloaded from 
-# https://download.developer.apple.com/Developer_Tools/Xcode_9.4.1/Xcode_9.4.1.xip
-ARG Xcodexip=Xcode_9.4.1.xip 
+# Xcode_13.1.xip needs to be downloaded from
+# https://developer.apple.com/download/all/?q=xcode - specically:
+ARG Xcodexip=Xcode_13.1.xip
 WORKDIR /opt
 COPY ${Xcodexip} /opt/${Xcodexip}
 RUN git clone https://github.com/tpoechtrager/osxcross.git
