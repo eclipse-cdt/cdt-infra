@@ -33,7 +33,7 @@ pipeline {
                       -DexcludedGroups=flakyTest,slowTest \
                       -P build-standalone-debugger-rcp \
                       -P skip-tests-except-cdt-ui \
-                      -DskipDoc=true \
+                      -DskipDoc=false \
                       -Ddsf.gdb.tests.timeout.multiplier=50 \
                       -Dindexer.timeout=300 \
                       -Dmaven.repo.local=/home/jenkins/.m2/repository \
