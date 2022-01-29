@@ -18,7 +18,7 @@ pipeline {
                         extensions: [],
                         submoduleCfg: [],
                         userRemoteConfigs: [[refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
-                        url: 'https://github.com/eclipse-cdt/cdt-gdb-vscode']]])
+                        url: 'https://github.com/eclipse-cdt-cloud/cdt-gdb-vscode']]])
                     timeout(activity: true, time: 20) {
                         sh '''
 yarn

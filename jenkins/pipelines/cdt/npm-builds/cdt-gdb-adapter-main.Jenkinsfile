@@ -12,7 +12,7 @@ pipeline {
     stage('Git Clone') {
       steps {
         container('cdt') {
-          git branch: 'master', url: 'https://github.com/eclipse-cdt/cdt-gdb-adapter'
+          git branch: 'main', url: 'https://github.com/eclipse-cdt-cloud/cdt-gdb-adapter'
         }
       }
     }

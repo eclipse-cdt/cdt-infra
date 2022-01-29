@@ -12,7 +12,7 @@ pipeline {
         stage('Run build') {
             steps {
                 container('cdt') {
-                    git branch: 'master', url: 'https://github.com/eclipse-cdt/cdt-gdb-vscode'
+                    git branch: 'main', url: 'https://github.com/eclipse-cdt-cloud/cdt-gdb-vscode'
                     timeout(activity: true, time: 20) {
                         sh '''
 yarn upgrade cdt-gdb-adapter

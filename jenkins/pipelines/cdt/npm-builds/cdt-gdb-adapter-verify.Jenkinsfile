@@ -19,7 +19,7 @@ pipeline {
             extensions: [],
             submoduleCfg: [],
             userRemoteConfigs: [[refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
-            url: 'https://github.com/eclipse-cdt/cdt-gdb-adapter']]])
+            url: 'https://github.com/eclipse-cdt-cloud/cdt-gdb-adapter']]])
         }
       }
     }
