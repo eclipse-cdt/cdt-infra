@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install meson
 
 #Node
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash \
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*  \
     && npm install -g yarn
