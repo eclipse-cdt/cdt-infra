@@ -32,7 +32,7 @@ pipeline {
             container('cdt') {
               timeout(120) {
                 checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'https://git.eclipse.org/r/cdt/org.eclipse.cdt.git']]])
-                withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+                withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                     sh '''/usr/share/maven/bin/mvn clean verify -V -B -DskipDoc=true \
 -Ddsf.gdb.tests.timeout.multiplier=50 \
 -Dindexer.timeout=500 \
@@ -58,7 +58,7 @@ pipeline {
             container('cdt') {
               timeout(120) {
                 checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'https://git.eclipse.org/r/cdt/org.eclipse.cdt.git']]])
-                withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+                withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                     sh '''/usr/share/maven/bin/mvn clean verify -V -B -DskipDoc=true \
 -Ddsf.gdb.tests.timeout.multiplier=50 \
 -Dindexer.timeout=500 \
@@ -91,7 +91,7 @@ pipeline {
             container('cdt') {
               timeout(120) {
                 checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'BuildChooserSetting', buildChooser: [$class: 'GerritTriggerBuildChooser']]], submoduleCfg: [], userRemoteConfigs: [[refspec: '$GERRIT_REFSPEC', url: 'https://git.eclipse.org/r/cdt/org.eclipse.cdt.git']]])
-                withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+                withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                     sh '''/usr/share/maven/bin/mvn clean verify -B -V -DskipDoc=true \
 -Ddsf.gdb.tests.timeout.multiplier=50 \
 -Dindexer.timeout=500 \

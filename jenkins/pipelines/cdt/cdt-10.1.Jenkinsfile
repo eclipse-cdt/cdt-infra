@@ -13,7 +13,7 @@ pipeline {
       steps {
         container('cdt') {
           timeout(activity: true, time: 20) {
-            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+            withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                 sh "ps -AHf"
                 sh "cat /etc/passwd | tail -1"
             }
@@ -39,7 +39,7 @@ pipeline {
       steps {
         container('cdt') {
           timeout(activity: true, time: 20) {
-            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+            withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                 sh "/usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Dmaven.test.failure.ignore=true \

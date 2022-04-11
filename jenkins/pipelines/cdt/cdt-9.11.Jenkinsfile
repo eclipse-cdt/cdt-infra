@@ -13,7 +13,7 @@ pipeline {
       steps {
         container('cdt') {
           timeout(activity: true, time: 20) {
-            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+            withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                 sh "ps -AHf"
                 sh "cat /etc/passwd | tail -1"
             }
@@ -39,7 +39,7 @@ pipeline {
       steps {
         container('cdt') {
           timeout(activity: true, time: 20) {
-            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+            withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                 sh 'JAVA_HOME=$JAVA8_HOME PATH=$JAVA_HOME/bin:$PATH /usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -P build-standalone-debugger-rcp \

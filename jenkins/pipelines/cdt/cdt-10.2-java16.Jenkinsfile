@@ -13,7 +13,7 @@ pipeline {
       steps {
         container('cdt') {
           timeout(activity: true, time: 20) {
-            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+            withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                 sh "ps -AHf"
                 sh "cat /etc/passwd | tail -1"
             }
@@ -39,7 +39,7 @@ pipeline {
       steps {
         container('cdt') {
           timeout(activity: true, time: 20) {
-            withEnv(['MAVEN_OPTS=-Xmx768m -Xms768m']) {
+            withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
                 sh "wget https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16%2B36/OpenJDK16-jdk_x64_linux_hotspot_16_36.tar.gz"
                 sh 'tar xf OpenJDK16-jdk_x64_linux_hotspot_16_36.tar.gz && JAVA_HOME=$PWD/jdk-16+36 PATH=$JAVA_HOME/bin:$PATH /usr/share/maven/bin/mvn \
                       clean verify -B -V \
