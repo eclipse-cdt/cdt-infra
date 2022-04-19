@@ -27,8 +27,10 @@ pipeline {
       steps {
         container('cdt') {
           timeout(activity: true, time: 20) {
-            sh 'MVN="/usr/share/maven/bin/mvn -Dmaven.repo.local=/home/jenkins/.m2/repository \
-                      --settings /home/jenkins/.m2/settings.xml" ./releng/scripts/check_code_cleanliness.sh'
+            withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
+              sh 'MVN="/usr/share/maven/bin/mvn -Dmaven.repo.local=/home/jenkins/.m2/repository \
+                        --settings /home/jenkins/.m2/settings.xml" ./releng/scripts/check_code_cleanliness.sh'
+            }
           }
         }
       }
