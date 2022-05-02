@@ -21,7 +21,7 @@ pipeline {
       steps {
         container('cdt') {
           // We use "checkout" instead of "git" here so we can specify relativeTargetDir and other options
-          checkout([$class: 'GitSCM', branches: [[name: '*/gdb-10-branch']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: true], [$class: 'RelativeTargetDirectory', relativeTargetDir: 'binutils-gdb']], submoduleCfg: [], userRemoteConfigs: [[refspec: '+refs/heads/gdb-10-branch:refs/remotes/origin/gdb-10-branch', url: 'https://github.com/bminor/binutils-gdb.git']]])
+          checkout([$class: 'GitSCM', branches: [[name: '*/gdb-12-branch']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: true], [$class: 'RelativeTargetDirectory', relativeTargetDir: 'binutils-gdb']], submoduleCfg: [], userRemoteConfigs: [[refspec: '+refs/heads/gdb-10-branch:refs/remotes/origin/gdb-10-branch', url: 'https://github.com/bminor/binutils-gdb.git']]])
         }
       }
     }
