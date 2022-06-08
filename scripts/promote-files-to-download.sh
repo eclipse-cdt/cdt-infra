@@ -21,3 +21,4 @@ fi
 $ECHO $SSH mkdir -p "${DOWNLOAD}/releases/latest/"
 $ECHO $SCP ./download/releases/latest/* "${SSHUSER}:${DOWNLOAD}/releases/latest/"
 $ECHO $SCP ./download/releases/10.6/* "${SSHUSER}:${DOWNLOAD}/releases/10.6/"
+$ECHO $SCP ./download/releases/10.7/* "${SSHUSER}:${DOWNLOAD}/releases/10.7/"
