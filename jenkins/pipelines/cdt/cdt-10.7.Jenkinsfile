@@ -40,7 +40,7 @@ pipeline {
         container('cdt') {
           timeout(activity: true, time: 20) {
             withEnv(['MAVEN_OPTS=-XX:MaxRAMPercentage=60.0']) {
-                sh "/usr/share/maven/bin/mvn \
+                sh "JAVA_HOME=$JAVA11_HOME PATH=$JAVA_HOME/bin:$PATH /usr/share/maven/bin/mvn \
                       clean verify -B -V \
                       -Dmaven.test.failure.ignore=true \
                       -DexcludedGroups=flakyTest,slowTest \
