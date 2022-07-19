@@ -55,12 +55,10 @@ RUN chmod 755 ${HOME}/.vnc/xstartup*.sh
 ####
 # From this point forward is the extra standard tools for CDT
 
-# Java, git and other tools
+# git and other tools
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
-      openjdk-8-jdk \
-      openjdk-11-jdk \
       curl \
       openssh-client \
       wget \
@@ -76,11 +74,70 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-ENV JAVA8_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV JAVA11_HOME /usr/lib/jvm/java-11-openjdk-amd64
-# Default to JAVA11 being in use
-RUN update-java-alternatives -s java-1.11.0-openjdk-amd64
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+
+# Get release versions from Adoptium API: https://api.adoptium.net/q/swagger-ui/#/Release%20Info/getReleaseNames
+ENV JDK8_VERSION jdk8u332-b09
+ENV JDK11_VERSION jdk-11.0.15+10
+ENV JDK17_VERSION jdk-17.0.3+7
+ENV JAVA8_HOME /usr/lib/jvm/${JDK8_VERSION}
+ENV JAVA11_HOME /usr/lib/jvm/${JDK11_VERSION}
+ENV JAVA17_HOME /usr/lib/jvm/${JDK17_VERSION}
+
+# Get Java from adoptium + header files for win32 & mac for cross compiling JNI libraries on Java 8, 11, 17
+# TODO: Move these runs into a script, the only difference between each invocation is the env variables
+RUN export JVERSION=${JDK8_VERSION} \
+    && export JHOME=${JAVA8_HOME} \
+    && mkdir /tmp/x && mkdir -p /usr/lib/jvm \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/linux/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-linux.tar.gz \
+    && mkdir /tmp/x/linux && cd /tmp/x/linux && tar xvf /tmp/x/openjdk-linux.tar.gz \
+    && mv /tmp/x/linux/${JVERSION} /usr/lib/jvm \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/windows/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-win32.zip \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
+    && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
+    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
+    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/win32/${JVERSION}/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
+    && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
+    && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
+    && find $JHOME/include \
+    && rm -rf /tmp/x
+RUN export JVERSION=${JDK11_VERSION} \
+    && export JHOME=${JAVA11_HOME} \
+    && mkdir /tmp/x && mkdir -p /usr/lib/jvm \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/linux/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-linux.tar.gz \
+    && mkdir /tmp/x/linux && cd /tmp/x/linux && tar xvf /tmp/x/openjdk-linux.tar.gz \
+    && mv /tmp/x/linux/${JVERSION} /usr/lib/jvm \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/windows/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-win32.zip \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
+    && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
+    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
+    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/win32/${JVERSION}/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
+    && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
+    && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
+    && find $JHOME/include \
+    && rm -rf /tmp/x
+RUN export JVERSION=${JDK17_VERSION} \
+    && export JHOME=${JAVA17_HOME} \
+    && mkdir /tmp/x && mkdir -p /usr/lib/jvm \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/linux/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-linux.tar.gz \
+    && mkdir /tmp/x/linux && cd /tmp/x/linux && tar xvf /tmp/x/openjdk-linux.tar.gz \
+    && mv /tmp/x/linux/${JVERSION} /usr/lib/jvm \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/windows/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-win32.zip \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
+    && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
+    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
+    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/win32/${JVERSION}/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
+    && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
+    && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
+    && find $JHOME/include \
+    && rm -rf /tmp/x
+
+
+# Default to JAVA17 being in use
+ENV PATH="${JAVA17_HOME}/bin:${PATH}"
+ENV JAVA_HOME ${JAVA17_HOME}
 
 # The version of git in Ubuntu 18.04 causes problems, so use newer git. See Bug 548519
 RUN echo "deb http://ppa.launchpad.net/git-core/ppa/ubuntu bionic main" > /etc/apt/sources.list.d/git-core-ubuntu-ppa-bionic.list
