@@ -96,8 +96,8 @@ RUN export JVERSION=${JDK8_VERSION} \
     && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
     && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
     && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
-    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/win32/${JVERSION}/include/$i ; done \
-    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/win32/${JVERSION}/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
     && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
     && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
     && find $JHOME/include \
@@ -112,8 +112,8 @@ RUN export JVERSION=${JDK11_VERSION} \
     && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
     && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
     && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
-    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/win32/${JVERSION}/include/$i ; done \
-    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/win32/${JVERSION}/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
     && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
     && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
     && find $JHOME/include \
@@ -128,8 +128,8 @@ RUN export JVERSION=${JDK17_VERSION} \
     && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
     && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
     && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
-    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/win32/${JVERSION}/include/$i ; done \
-    && cd $JHOME/include && for i in *.h; do diff $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/win32/${JVERSION}/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
     && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
     && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
     && find $JHOME/include \
