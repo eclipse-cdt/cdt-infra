@@ -13,7 +13,7 @@ pipeline {
       steps {
         container('cdt') {
           // We use "checkout" instead of "git" here so we can specify relativeTargetDir and other options
-          checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: true], [$class: 'RelativeTargetDirectory', relativeTargetDir: 'eclipse-cdt']], submoduleCfg: [], userRemoteConfigs: [[refspec: '+refs/heads/master:refs/remotes/origin/master', url: 'https://git.eclipse.org/r/cdt/org.eclipse.cdt.git']]])
+          checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: true], [$class: 'RelativeTargetDirectory', relativeTargetDir: 'eclipse-cdt']], submoduleCfg: [], userRemoteConfigs: [[refspec: '+refs/heads/main:refs/remotes/origin/main', url: 'https://github.com/eclipse-cdt/cdt.git']]])
         }
       }
     }
