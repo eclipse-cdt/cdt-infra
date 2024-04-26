@@ -77,47 +77,13 @@ ENV LC_ALL en_US.UTF-8
 
 
 # Get release versions from Adoptium API: https://api.adoptium.net/q/swagger-ui/#/Release%20Info/getReleaseNames
-ENV JDK8_VERSION jdk8u332-b09
-ENV JDK11_VERSION jdk-11.0.15+10
-ENV JDK17_VERSION jdk-17.0.3+7
-ENV JAVA8_HOME /usr/lib/jvm/${JDK8_VERSION}
-ENV JAVA11_HOME /usr/lib/jvm/${JDK11_VERSION}
+ENV JDK17_VERSION jdk-17.0.11+9
+ENV JDK21_VERSION jdk-21.0.3+9
 ENV JAVA17_HOME /usr/lib/jvm/${JDK17_VERSION}
+ENV JAVA21_HOME /usr/lib/jvm/${JDK21_VERSION}
 
 # Get Java from adoptium + header files for win32 & mac for cross compiling JNI libraries on Java 8, 11, 17
 # TODO: Move these runs into a script, the only difference between each invocation is the env variables
-RUN export JVERSION=${JDK8_VERSION} \
-    && export JHOME=${JAVA8_HOME} \
-    && mkdir /tmp/x && mkdir -p /usr/lib/jvm \
-    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/linux/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-linux.tar.gz \
-    && mkdir /tmp/x/linux && cd /tmp/x/linux && tar xvf /tmp/x/openjdk-linux.tar.gz \
-    && mv /tmp/x/linux/${JVERSION} /usr/lib/jvm \
-    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/windows/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-win32.zip \
-    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
-    && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
-    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
-    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/win32/${JVERSION}/include/$i ; done \
-    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
-    && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
-    && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
-    && find $JHOME/include \
-    && rm -rf /tmp/x
-RUN export JVERSION=${JDK11_VERSION} \
-    && export JHOME=${JAVA11_HOME} \
-    && mkdir /tmp/x && mkdir -p /usr/lib/jvm \
-    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/linux/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-linux.tar.gz \
-    && mkdir /tmp/x/linux && cd /tmp/x/linux && tar xvf /tmp/x/openjdk-linux.tar.gz \
-    && mv /tmp/x/linux/${JVERSION} /usr/lib/jvm \
-    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/windows/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-win32.zip \
-    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
-    && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
-    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
-    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/win32/${JVERSION}/include/$i ; done \
-    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
-    && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
-    && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
-    && find $JHOME/include \
-    && rm -rf /tmp/x
 RUN export JVERSION=${JDK17_VERSION} \
     && export JHOME=${JAVA17_HOME} \
     && mkdir /tmp/x && mkdir -p /usr/lib/jvm \
@@ -134,23 +100,39 @@ RUN export JVERSION=${JDK17_VERSION} \
     && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
     && find $JHOME/include \
     && rm -rf /tmp/x
+  RUN export JVERSION=${JDK21_VERSION} \
+    && export JHOME=${JAVA21_HOME} \
+    && mkdir /tmp/x && mkdir -p /usr/lib/jvm \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/linux/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-linux.tar.gz \
+    && mkdir /tmp/x/linux && cd /tmp/x/linux && tar xvf /tmp/x/openjdk-linux.tar.gz \
+    && mv /tmp/x/linux/${JVERSION} /usr/lib/jvm \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/windows/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-win32.zip \
+    && curl -sL "https://api.adoptium.net/v3/binary/version/${JVERSION}/mac/x64/jdk/hotspot/normal/eclipse?project=jdk" > /tmp/x/openjdk-mac.tar.gz \
+    && mkdir /tmp/x/win32 && cd /tmp/x/win32 && unzip /tmp/x/openjdk-win32.zip \
+    && mkdir /tmp/x/mac && cd /tmp/x/mac && tar xvf /tmp/x/openjdk-mac.tar.gz \
+    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/win32/${JVERSION}/include/$i ; done \
+    && cd $JHOME/include && for i in *.h; do diff -w $i /tmp/x/mac/${JVERSION}/Contents/Home/include/$i ; done \
+    && mv /tmp/x/win32/${JVERSION}/include/win32 $JHOME/include \
+    && mv /tmp/x/mac/${JVERSION}/Contents/Home/include/darwin $JHOME/include \
+    && find $JHOME/include \
+    && rm -rf /tmp/x
 
 
-# Default to JAVA17 being in use
-ENV PATH="${JAVA17_HOME}/bin:${PATH}"
-ENV JAVA_HOME ${JAVA17_HOME}
+# Default to JAVA21 being in use
+ENV PATH="${JAVA21_HOME}/bin:${PATH}"
+ENV JAVA_HOME ${JAVA21_HOME}
 
 # The version of git in Ubuntu 18.04 causes problems, so use newer git. See Bug 548519
-RUN echo "deb http://ppa.launchpad.net/git-core/ppa/ubuntu bionic main" > /etc/apt/sources.list.d/git-core-ubuntu-ppa-bionic.list
+RUN echo "deb https://ppa.launchpad.net/git-core/ppa/ubuntu bionic main" > /etc/apt/sources.list.d/git-core-ubuntu-ppa-bionic.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E1DD270288B4E6030699E45FA1715D88E1DF1F24 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       git \
     && rm -rf /var/lib/apt/lists/*
 
 
-# Maven
-ENV MAVEN_VERSION 3.6.3
-RUN curl -fsSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
+# Maven - Note that this is the default, but the Jenkinsfile may override it with JIPP version
+ENV MAVEN_VERSION 3.9.6
+RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
   && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 ENV MAVEN_HOME /usr/share/maven
