@@ -36,12 +36,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #Meson
 RUN pip3 install meson
 
-#Node
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash \
-    && apt-get install -y nodejs \
-    && rm -rf /var/lib/apt/lists/*  \
-    && npm install -g yarn
-
 # GDB pre-built in a different image
 COPY --from=cdt-infra-all-gdbs:ubuntu-18.04 /shared/common/gdb/gdb-all /shared/common/gdb/gdb-all
 ENV PATH="/shared/common/gdb/gdb-all/bin:${PATH}"
