@@ -122,14 +122,6 @@ RUN export JVERSION=${JDK17_VERSION} \
 ENV PATH="${JAVA21_HOME}/bin:${PATH}"
 ENV JAVA_HOME ${JAVA21_HOME}
 
-# The version of git in Ubuntu 18.04 causes problems, so use newer git. See Bug 548519
-RUN echo "deb https://ppa.launchpad.net/git-core/ppa/ubuntu bionic main" > /etc/apt/sources.list.d/git-core-ubuntu-ppa-bionic.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E1DD270288B4E6030699E45FA1715D88E1DF1F24 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      git \
-    && rm -rf /var/lib/apt/lists/*
-
-
 # Maven - Note that this is the default, but the Jenkinsfile may override it with JIPP version
 ENV MAVEN_VERSION 3.9.6
 RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
